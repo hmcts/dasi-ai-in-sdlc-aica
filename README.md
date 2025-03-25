@@ -97,20 +97,32 @@ Prompts are broken down into 4 sections:
 ## AI Coding Assistants
 
 ### [GitHub CoPilot](https://github.com/features/copilot)
-* Version: 1.291.0
-* Model: GPT-4o
+* Version: 1.291.0.
+* Model: [GPT-4o](https://platform.openai.com/docs/models/gpt-4o).
+* Rules used:
+    * When working on Nunjucks (.njk) templates always use the Gov UK design system.
+    * Prefer the Yarn package manager
 
 ### [Cursor](https://www.cursor.com/)
 * Version: 0.47.8
-* Model: Claude Sonnet 3.7 (no extended thinking)
+* Model: [Claude Sonnet 3.7](https://www.anthropic.com/news/claude-3-7-sonnet) (no [extended thinking](https://www.anthropic.com/news/visible-extended-thinking)).
+* Rules used:
+    * When working on Nunjucks (.njk) templates always use the Gov UK design system.
+    * Prefer the Yarn package manager.
 
 ### [Windsurf](https://codeium.com/windsurf)
 * Version: 1.5.8 with Codeium v.1.40.2
-* Model: Claude Sonnet 3.7 (no extended thinking)
+* Model: [Claude Sonnet 3.7](https://www.anthropic.com/news/claude-3-7-sonnet) (no [extended thinking](https://www.anthropic.com/news/visible-extended-thinking)).
+* Rules used:
+    * When working on Nunjucks (.njk) templates always use the Gov UK design system.
+    * Prefer the Yarn package manager.
 
 ### [Cline](https://cline.bot/)
-* Version: 3.8.2
-* Model: Claude Sonnet 3.7 (no extended thinking)
+* Version: 3.8.2.
+* Model: [Claude Sonnet 3.7](https://www.anthropic.com/news/claude-3-7-sonnet) (no [extended thinking](https://www.anthropic.com/news/visible-extended-thinking)).
+* Rules used:
+    * When working on Nunjucks (.njk) templates always use the Gov UK design system.
+    * Prefer the Yarn package manager.
 
 
 
