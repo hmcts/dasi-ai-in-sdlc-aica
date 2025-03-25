@@ -1,0 +1,86 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "macros/error-summary.njk" import errorSummary %}
+
+{% extends "template.njk" %}
+
+{% block pageTitle %}
+  {% if error %}
+    {{ errorTitle }}
+  {% endif %}
+  {% if (path !== '/search-by-name') %}
+    {{ resultsTitle }}
+  {% else %}
+    {{ title }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if error %}
+  {{ errorSummary(error.title, error.text, "#search") }}
+{% endif %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+
+
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        What is the name or address of the court or tribunal?
+      </h1>
+    </legend>
+
+    <div id="know-location-hint" class="govuk-hint">
+      The name of the court or tribunal can be found on a letter, email or text from us.
+    </div>
+
+    <form method="GET" action="/courts">
+      {{ govukInput({
+        label: {
+          text: "Enter a court name, address, town or city",
+          classes: "govuk-label govuk-label--m"
+        },
+        hint: {
+          text: "For example, Blackburn Family Court."
+        },
+        classes: "govuk-input govuk-!-width-three-quarters",
+        id: "search",
+        name: "search",
+        value: search,
+        errorMessage: { text: errorText[errorType] } if error
+      }) }}
+      {{ govukButton({
+        text: "Continue",
+        classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8 continue",
+        type: submit
+      }) }}
+    </form>
+
+    {% if (path !== '/search-by-name') and (results.length > 0) %}
+      <p role="status" class="govuk-body">{{ foundResults }}</p>
+      <p class="govuk-body">Most relevant results displayed.</p>
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+      <div class="search-results" id="search-results">
+        {% for item in results %}
+          <h2 class="govuk-heading-m">
+            <a class="govuk-link" href="/courts/{{ item.slug }}">{{ item.name }}</a>
+          </h2>
+        {% endfor %}
+      </div>
+    {% elif (path !== '/search-by-name') %}
+      <div class="no-search-results" id="no-search-results">
+        <p role="status" class="govuk-body-m govuk-!-font-weight-bold">There are no matching results.</p>
+        <p class="govuk-body">Improve your search results by:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>double-checking your spelling</li>
+          <li>using fewer keywords</li>
+          <li>searching for something less specific</li>
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

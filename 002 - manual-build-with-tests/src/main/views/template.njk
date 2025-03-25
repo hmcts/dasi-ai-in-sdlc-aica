@@ -1,0 +1,33 @@
+{% extends "govuk/template.njk" %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+
+{% block head %}
+  {% include "webpack/css.njk" %}
+{% endblock %}
+
+{% block header %}
+  {{ govukHeader({
+      containerClasses: "govuk-width-container",
+      serviceName: "Find a Court or Tribunal",
+      serviceUrl: (globals.basePath if globals.basePath) + "/",
+      useTudorCrown: true
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+      tag: {
+        text: "beta"
+      },
+      html: 'This is a new service – your <a href="https://www.smartsurvey.co.uk/s/feedbackFaCT">feedback</a> will help us to improve it.'
+    })
+  }}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  {% include "webpack/js.njk" %}
+{% endblock %}

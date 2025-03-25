@@ -1,0 +1,57 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "macros/error-summary.njk" import errorSummary %}
+
+{% extends "template.njk" %}
+
+{% block pageTitle %}
+  {% if errors %}
+    {{ errorTitle }}
+  {% endif %}
+  Do you know the name of the court or tribunal?
+{% endblock %}
+
+{% block content %}
+{% if errors %}
+  {{ errorSummary(error.title, error.text, "#i-have-the-name") }}
+{% endif %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="POST">
+      {{ govukRadios({
+        idPrefix: "know-location",
+        name: "knowLocation",
+        fieldset: {
+          legend: {
+            text: "Do you know the name of the court or tribunal?",
+            classes: "govuk-fieldset__legend--l",
+            isPageHeading: true
+          }
+        },
+        hint: {
+          text: "The name of the court or tribunal can be found on a letter, email or text from us."
+        },
+        errorMessage: { text: error.text } if errors,
+        items: [
+          {
+            id: "i-have-the-name",
+            value: "yes",
+            text: "I have the name"
+          },
+          {
+            id: "i-do-not-have-the-name",
+            value: "no",
+            text: "I do not have the name"
+          }
+        ]
+      }) }}
+      {{ govukButton({
+        text: "Continue",
+        classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8 continue"
+      }) }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

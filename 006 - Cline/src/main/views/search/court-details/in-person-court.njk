@@ -1,0 +1,188 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+      
+      <h1 class="govuk-heading-xl">{{ court.name }}</h1>
+      
+      {% if court.open == false %}
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            This court is now closed
+          </strong>
+        </div>
+      {% endif %}
+      
+      {% if court.urgent_message %}
+        <div class="govuk-inset-text govuk-!-margin-bottom-6">
+          {{ court.urgent_message | safe }}
+        </div>
+      {% endif %}
+      
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          {% if court.addresses and court.addresses.length > 0 %}
+            <h2 class="govuk-heading-m">Address</h2>
+            {% for address in court.addresses %}
+              {% if address.type == 'Visit us' or address.type == 'Write to us' or address.type == 'Visit or contact us' %}
+                <p class="govuk-body">
+                  {% for line in address.address_lines %}
+                    {{ line }}<br>
+                  {% endfor %}
+                  {{ address.town }}<br>
+                  {% if address.county %}{{ address.county }}<br>{% endif %}
+                  {{ address.postcode }}
+                </p>
+              {% endif %}
+            {% endfor %}
+            
+            {% if court.lat and court.lon %}
+              <p class="govuk-body">
+                <a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ court.lat }},{{ court.lon }}" class="govuk-link" target="_blank" rel="noopener noreferrer">Get directions (opens in new tab)</a>
+              </p>
+            {% endif %}
+            
+            <p class="govuk-body">
+              <a href="https://www.gov.uk/guidance/what-to-expect-coming-to-a-court-or-tribunal" class="govuk-link" target="_blank" rel="noopener noreferrer">What to expect coming to a court or tribunal (opens in new tab)</a>
+            </p>
+          {% endif %}
+          
+          {% if court.info %}
+            <h2 class="govuk-heading-m">Additional information</h2>
+            <p class="govuk-body">{{ court.info | safe }}</p>
+          {% endif %}
+          
+          {% if court.areas_of_law and court.areas_of_law.length > 0 %}
+            <h2 class="govuk-heading-m">This location handles</h2>
+            <ul class="govuk-list govuk-list--bullet">
+              {% for area in court.areas_of_law %}
+                <li>
+                  {% if area.external_link %}
+                    <a href="{{ area.external_link }}" class="govuk-link">{{ area.name }}</a>
+                  {% else %}
+                    {{ area.name }}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          
+          {% if court.opening_times and court.opening_times.length > 0 %}
+            <h2 class="govuk-heading-m">Opening times</h2>
+            <table class="govuk-table">
+              <tbody class="govuk-table__body">
+                {% for time in court.opening_times %}
+                  <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">{{ time.description | safe }}</th>
+                    <td class="govuk-table__cell">{{ time.hours | safe }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+          
+          {% if court.emails and court.emails.length > 0 %}
+            <h2 class="govuk-heading-m">Email</h2>
+            <table class="govuk-table">
+              <tbody class="govuk-table__body">
+                {% for email in court.emails %}
+                  <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">{{ email.description }}</th>
+                    <td class="govuk-table__cell">
+                      <a href="mailto:{{ email.address }}" class="govuk-link">{{ email.address }}</a>
+                      {% if email.explanation %}
+                        <p class="govuk-body-s">({{ email.explanation }})</p>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+          
+          {% if court.contacts and court.contacts.length > 0 %}
+            <h2 class="govuk-heading-m">Telephone</h2>
+            <table class="govuk-table">
+              <tbody class="govuk-table__body">
+                {% for contact in court.contacts %}
+                  <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">{{ contact.description }}</th>
+                    <td class="govuk-table__cell">
+                      <a href="tel:{{ contact.number }}" class="govuk-link">{{ contact.number }}</a>
+                      {% if contact.explanation %}
+                        <p class="govuk-body-s">({{ contact.explanation }})</p>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+          
+          <h2 class="govuk-heading-m">Court codes for legal professionals</h2>
+          <table class="govuk-table">
+            <tbody class="govuk-table__body">
+              {% if court.crown_location_code %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header">Crown Court location code:</th>
+                  <td class="govuk-table__cell">{{ court.crown_location_code }}</td>
+                </tr>
+              {% endif %}
+              {% if court.county_location_code %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header">County Court location code:</th>
+                  <td class="govuk-table__cell">{{ court.county_location_code }}</td>
+                </tr>
+              {% endif %}
+              {% if court.magistrates_location_code %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header">Magistrates' Court location code:</th>
+                  <td class="govuk-table__cell">{{ court.magistrates_location_code }}</td>
+                </tr>
+              {% endif %}
+              {% if court.family_location_code %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header">Family Court location code:</th>
+                  <td class="govuk-table__cell">{{ court.family_location_code }}</td>
+                </tr>
+              {% endif %}
+              {% if court.tribunal_location_code %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header">Tribunal location code:</th>
+                  <td class="govuk-table__cell">{{ court.tribunal_location_code }}</td>
+                </tr>
+              {% endif %}
+              {% if court.dx_number and court.dx_number.length > 0 %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header">DX:</th>
+                  <td class="govuk-table__cell">{{ court.dx_number[0] }}</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          
+          {% if court.access_scheme != undefined %}
+            <h2 class="govuk-heading-m">Professional users' court and tribunal access scheme</h2>
+            {% if court.access_scheme %}
+              <p class="govuk-body">This location participates in this scheme</p>
+            {% else %}
+              <p class="govuk-body">This location does not participate in this scheme</p>
+            {% endif %}
+            <p class="govuk-body">
+              <a href="https://www.gov.uk/guidance/professional-users-court-and-tribunal-access-scheme" class="govuk-link" target="_blank" rel="noopener noreferrer">Register for the scheme (opens in new tab)</a>
+            </p>
+          {% endif %}
+          
+          {% if court.image_file %}
+            <h2 class="govuk-heading-m">Court image</h2>
+            <img src="{{ court.image_file }}" alt="Image of {{ court.name }}" class="govuk-!-width-full">
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

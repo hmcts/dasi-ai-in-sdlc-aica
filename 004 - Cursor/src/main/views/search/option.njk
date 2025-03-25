@@ -1,0 +1,54 @@
+{% extends "template.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% block pageTitle %}
+  Do you know the name of the court or tribunal? - Find a court or tribunal - GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/"
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <form method="POST" action="/search-option">
+          {{ govukRadios({
+            idPrefix: "court-or-tribunal",
+            name: "court-or-tribunal",
+            fieldset: {
+              legend: {
+                text: "Do you know the name of the court or tribunal?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            items: [
+              {
+                value: "yes",
+                text: "I have the name"
+              },
+              {
+                value: "no",
+                text: "I do not have the name"
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %} 

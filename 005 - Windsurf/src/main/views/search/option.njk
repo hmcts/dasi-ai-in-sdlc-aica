@@ -1,0 +1,49 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="POST" action="/search-option">
+            <div class="govuk-form-group {% if error %}govuk-form-group--error{% endif %}">
+              <fieldset class="govuk-fieldset" aria-describedby="{% if error %}search-option-error{% endif %}">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                  <h1 class="govuk-fieldset__heading">
+                    Do you know the name of the court or tribunal?
+                  </h1>
+                </legend>
+                
+                {% if error %}
+                <p id="search-option-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                </p>
+                {% endif %}
+                
+                <div class="govuk-radios" data-module="govuk-radios">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="search-option-yes" name="searchOption" type="radio" value="yes"
+                      {% if previousValues and previousValues.searchOption === 'yes' %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="search-option-yes">
+                      I have the name
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="search-option-no" name="searchOption" type="radio" value="no"
+                      {% if previousValues and previousValues.searchOption === 'no' %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="search-option-no">
+                      I do not have the name
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <button class="govuk-button" data-module="govuk-button">
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

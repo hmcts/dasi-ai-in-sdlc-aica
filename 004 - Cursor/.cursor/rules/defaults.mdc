@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+* When working on Nunjucks (.njk) templates always use the Gov UK design system.
+* Prefer the Yarn package manager

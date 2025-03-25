@@ -1,0 +1,102 @@
+{% extends "template.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+
+{% block pageTitle %}
+  {% if errorData %}Error: {% endif %}What is the name or address of the court or tribunal? - Find a court or tribunal - GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/search-option"
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {% if errorData %}
+          {{ govukErrorSummary({
+            titleText: errorData.title,
+            errorList: [
+              {
+                text: errorData.text,
+                href: "#search-input"
+              }
+            ]
+          }) }}
+        {% endif %}
+        
+        <h1 class="govuk-heading-xl">What is the name or address of the court or tribunal?</h1>
+        
+        <p class="govuk-body">The name of the court or tribunal can be found on a letter, email or text from us.</p>
+        
+        <form method="GET" action="/courts">
+          {{ govukInput({
+            label: {
+              text: "Enter a court name, address, town or city",
+              classes: "govuk-label--m"
+            },
+            id: "search-input",
+            name: "search",
+            value: searchQuery,
+            classes: "govuk-!-width-two-thirds",
+            hint: {
+              text: "For example, Blackburn Family Court."
+            },
+            errorMessage: errorData and {
+              text: errorData.text
+            }
+          }) }}
+
+          {{ govukButton({
+            text: "Search"
+          }) }}
+        </form>
+
+        {% if results and results.length > 0 %}
+          <h2 class="govuk-heading-m govuk-!-margin-top-8">Search results</h2>
+          
+          <p class="govuk-body">We found {{ results.length }} court{% if results.length != 1 %}s{% endif %} matching your search.</p>
+          
+          <ul class="govuk-list">
+            {% for court in results %}
+              <li class="govuk-!-margin-bottom-4">
+                <h3 class="govuk-heading-s govuk-!-margin-bottom-1">
+                  <a href="/courts/{{ court.slug }}" class="govuk-link">{{ court.name }}</a>
+                </h3>
+                {% if court.types and court.types.length > 0 %}
+                  <p class="govuk-body-s govuk-!-margin-bottom-1">
+                    {% for type in court.types %}
+                      <span class="govuk-tag govuk-tag--blue govuk-!-margin-right-1">{{ type.name }}</span>
+                    {% endfor %}
+                  </p>
+                {% endif %}
+                {% if court.displayed == false %}
+                  <span class="govuk-tag govuk-tag--grey">Not displayed</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% elif searchQuery and not errorData %}
+          <h2 class="govuk-heading-m govuk-!-margin-top-8">No results found</h2>
+          <p class="govuk-body">We couldn't find any courts or tribunals matching "{{ searchQuery }}".</p>
+          <p class="govuk-body">Try:</p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>checking your spelling</li>
+            <li>using fewer keywords</li>
+            <li>searching for a different location</li>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %} 

@@ -1,0 +1,74 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          {% if error %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+              <h2 class="govuk-error-summary__title" id="error-summary-title">
+                There is a problem
+              </h2>
+              <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                  <li>
+                    <a href="#action-nearest">{{ error }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+          
+          <h1 class="govuk-heading-xl">What do you want to do?</h1>
+          
+          <form method="POST" action="/service-choose-action">
+            <div class="govuk-form-group {% if error %}govuk-form-group--error{% endif %}">
+              <fieldset class="govuk-fieldset" aria-describedby="{% if error %}action-error{% endif %}">
+                {% if error %}
+                  <p id="action-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                  </p>
+                {% endif %}
+                
+                <div class="govuk-radios" data-module="govuk-radios">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-nearest" name="action" type="radio" value="nearest" {% if previousValues and previousValues.action == 'nearest' %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="action-nearest">
+                      Find the nearest court or tribunal
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-documents" name="action" type="radio" value="documents" {% if previousValues and previousValues.action == 'documents' %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="action-documents">
+                      Find a court or tribunal to send documents to
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-update" name="action" type="radio" value="update" {% if previousValues and previousValues.action == 'update' %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="action-update">
+                      Contact a court or tribunal to get an update on your application
+                    </label>
+                  </div>
+                  
+                  <div class="govuk-radios__divider">or</div>
+                  
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-not-listed" name="action" type="radio" value="not-listed" {% if previousValues and previousValues.action == 'not-listed' %}checked{% endif %}>
+                    <label class="govuk-label govuk-radios__label" for="action-not-listed">
+                      It is not listed here
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            
+            <button class="govuk-button" data-module="govuk-button">
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

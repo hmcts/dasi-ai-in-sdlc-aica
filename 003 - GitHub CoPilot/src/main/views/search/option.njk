@@ -1,0 +1,38 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Do you know the name of the court or tribunal?</h1>
+      <form method="post" action="/search-option">
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="court-or-tribunal-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+              <h2 class="govuk-fieldset__heading">
+                <!-- Please select an option -->
+              </h2>
+            </legend>
+            <div id="court-or-tribunal-hint" class="govuk-hint">
+              The name of the court or tribunal can be found on a letter, email or text from us.
+            </div>
+            <div class="govuk-radios">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="yes" name="court-or-tribunal" type="radio" value="yes">
+                <label class="govuk-label govuk-radios__label" for="yes">
+                  I have the name
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="no" name="court-or-tribunal" type="radio" value="no">
+                <label class="govuk-label govuk-radios__label" for="no">
+                  I do not have the name
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <button class="govuk-button" data-module="govuk-button">Continue</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

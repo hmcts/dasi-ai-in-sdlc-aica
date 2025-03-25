@@ -1,0 +1,179 @@
+{% extends "template.njk" %}
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+    <h1 class="govuk-heading-xl">{{ name }}</h1>
+    
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {% if notInPersonP1 %}
+          <div class="govuk-inset-text">
+            {{ notInPersonP1 | safe }}
+          </div>
+        {% endif %}
+        
+        {% if image_file %}
+          <img src="{{ image_file }}" alt="Image of {{ name }}" class="govuk-!-width-full govuk-!-margin-bottom-6">
+        {% endif %}
+        
+        {% if info %}
+          <div class="govuk-inset-text">
+            {{ info | safe }}
+          </div>
+        {% endif %}
+        
+        {% if urgent_message %}
+          <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+              <span class="govuk-warning-text__assistive">Warning</span>
+              {{ urgent_message | safe }}
+            </strong>
+          </div>
+        {% endif %}
+        
+        <h2 class="govuk-heading-m">Write to us:</h2>
+        
+        {% if service_centre and service_centre.addresses and service_centre.addresses.length > 0 %}
+          <h3 class="govuk-heading-s">Address</h3>
+          {% for address in service_centre.addresses %}
+            <div class="govuk-!-margin-bottom-4">
+              {% if address.description %}
+                <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ address.description }}</p>
+              {% endif %}
+              <p class="govuk-body">
+                {% for line in address.address_lines %}
+                  {{ line }}<br>
+                {% endfor %}
+                {{ address.town }}<br>
+                {% if address.county %}
+                  {{ address.county }}<br>
+                {% endif %}
+                {{ address.postcode }}
+              </p>
+            </div>
+          {% endfor %}
+        {% endif %}
+        
+        {% if addresses and addresses.length > 0 %}
+          <h3 class="govuk-heading-s">Address</h3>
+          {% for address in addresses %}
+            <div class="govuk-!-margin-bottom-4">
+              {% if address.description %}
+                <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ address.description }}</p>
+              {% endif %}
+              <p class="govuk-body">
+                {% for line in address.address_lines %}
+                  {{ line }}<br>
+                {% endfor %}
+                {{ address.town }}<br>
+                {% if address.county %}
+                  {{ address.county }}<br>
+                {% endif %}
+                {{ address.postcode }}
+              </p>
+            </div>
+          {% endfor %}
+        {% endif %}
+        
+        {% if info %}
+          <h3 class="govuk-heading-s">Additional information</h3>
+          <p class="govuk-body">{{ info | safe }}</p>
+          <p class="govuk-body">Scammers are mimicking genuine HMCTS phone numbers and email addresses. They may demand payment and claim to be from HMRC or enforcement. If you're unsure, do not pay anything and report the scam to <a href="https://www.actionfraud.police.uk/" class="govuk-link" target="_blank" rel="noopener noreferrer">Action Fraud (opens in new tab)</a>.</p>
+        {% endif %}
+        
+        {% if service_centre and service_centre.emails and service_centre.emails.length > 0 %}
+          <h3 class="govuk-heading-s">Email</h3>
+          {% for email in service_centre.emails %}
+            <p class="govuk-body">
+              <a href="mailto:{{ email.address }}" class="govuk-link">{{ email.address }}</a>
+              {% if email.description %}
+                <br><span class="govuk-body-s">({{ email.description }})</span>
+              {% endif %}
+            </p>
+          {% endfor %}
+        {% elif emails and emails.length > 0 %}
+          <h3 class="govuk-heading-s">Email</h3>
+          {% for email in emails %}
+            <p class="govuk-body">
+              <a href="mailto:{{ email.address }}" class="govuk-link">{{ email.address }}</a>
+              {% if email.description %}
+                <br><span class="govuk-body-s">({{ email.description }})</span>
+              {% endif %}
+            </p>
+          {% endfor %}
+        {% endif %}
+        
+        {% if service_centre and service_centre.contacts and service_centre.contacts.length > 0 %}
+          <h3 class="govuk-heading-s">Telephone</h3>
+          {% for contact in service_centre.contacts %}
+            <p class="govuk-body">
+              <a href="tel:{{ contact.number }}" class="govuk-link">{{ contact.number }}</a>
+              {% if contact.description %}
+                <br><span class="govuk-body-s">({{ contact.description }})</span>
+              {% endif %}
+              {% if contact.explanation %}
+                <br><span class="govuk-body-s">{{ contact.explanation }}</span>
+              {% endif %}
+            </p>
+          {% endfor %}
+        {% elif contacts and contacts.length > 0 %}
+          <h3 class="govuk-heading-s">Telephone</h3>
+          {% for contact in contacts %}
+            <p class="govuk-body">
+              <a href="tel:{{ contact.number }}" class="govuk-link">{{ contact.number }}</a>
+              {% if contact.description %}
+                <br><span class="govuk-body-s">({{ contact.description }})</span>
+              {% endif %}
+              {% if contact.explanation %}
+                <br><span class="govuk-body-s">{{ contact.explanation }}</span>
+              {% endif %}
+            </p>
+          {% endfor %}
+        {% endif %}
+        
+        {% if areas_of_law and areas_of_law.length > 0 %}
+          <h3 class="govuk-heading-s">This location handles</h3>
+          <ul class="govuk-list govuk-list--bullet">
+            {% for area in areas_of_law %}
+              <li>
+                {% if area.external_link %}
+                  <a href="{{ area.external_link }}" class="govuk-link" target="_blank" rel="noopener noreferrer">{{ area.name }}</a> (opens in new tab)
+                {% else %}
+                  {{ area.name }}
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        
+        <h3 class="govuk-heading-s">Make a complaint</h3>
+        <p class="govuk-body">
+          <a href="https://www.gov.uk/government/organisations/hm-courts-and-tribunals-service/about/complaints-procedure" class="govuk-link" target="_blank" rel="noopener noreferrer">Contact us to make a complaint</a> (opens in new tab)
+        </p>
+        
+        {% if dx_number or gbs %}
+          <h3 class="govuk-heading-s">Court codes for legal professionals</h3>
+          {% if dx_number %}
+            <p class="govuk-body">DX: {{ dx_number }}</p>
+          {% endif %}
+          {% if gbs %}
+            <p class="govuk-body">GBS: {{ gbs }}</p>
+          {% endif %}
+        {% endif %}
+        
+        <h3 class="govuk-heading-s">Professional users' court and tribunal access scheme</h3>
+        <p class="govuk-body">This location participates in this scheme</p>
+        <p class="govuk-body">
+          <a href="https://www.gov.uk/guidance/professional-users-court-and-tribunal-access-scheme" class="govuk-link" target="_blank" rel="noopener noreferrer">Register for the scheme</a> (opens in new tab)
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

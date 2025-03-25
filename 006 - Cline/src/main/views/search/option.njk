@@ -1,0 +1,40 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">Do you know the name of the court or tribunal?</h1>
+          
+          <form method="POST">
+            {% include "macros/csrf.njk" %}
+            
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset">
+                <div class="govuk-radios">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="know-name-yes" name="know-name" type="radio" value="yes">
+                    <label class="govuk-label govuk-radios__label" for="know-name-yes">
+                      I have the name
+                    </label>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="know-name-no" name="know-name" type="radio" value="no">
+                    <label class="govuk-label govuk-radios__label" for="know-name-no">
+                      I do not have the name
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
