@@ -1,0 +1,57 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">What do you want to do?</h1>
+          
+          <form method="POST" action="/service-choose-action">
+            {% include "macros/csrf.njk" %}
+            
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset">
+                <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-nearest" name="action" type="radio" value="nearest">
+                    <label class="govuk-label govuk-radios__label" for="action-nearest">
+                      Find the nearest court or tribunal
+                    </label>
+                  </div>
+                  
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-documents" name="action" type="radio" value="documents">
+                    <label class="govuk-label govuk-radios__label" for="action-documents">
+                      Find a court or tribunal to send documents to
+                    </label>
+                  </div>
+                  
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-update" name="action" type="radio" value="update">
+                    <label class="govuk-label govuk-radios__label" for="action-update">
+                      Contact a court or tribunal to get an update on your application
+                    </label>
+                  </div>
+                  
+                  <div class="govuk-radios__divider">or</div>
+                  
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="action-not-listed" name="action" type="radio" value="not-listed">
+                    <label class="govuk-label govuk-radios__label" for="action-not-listed">
+                      It is not listed here
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+              Continue
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

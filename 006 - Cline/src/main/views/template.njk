@@ -1,0 +1,18 @@
+{% extends "govuk/template.njk" %}
+
+{% block pageTitle %}
+  {% if court and court.title %}
+    {{ court.title }}
+  {% else %}
+    Find a Court or Tribunal - GOV.UK
+  {% endif %}
+{% endblock %}
+
+{% block head %}
+  {% include "webpack/css.njk" %}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  {% include "webpack/js.njk" %}
+{% endblock %}

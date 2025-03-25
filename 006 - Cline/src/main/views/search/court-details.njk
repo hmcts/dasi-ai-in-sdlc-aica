@@ -1,0 +1,77 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <a href="javascript:history.back()" class="govuk-back-link">Back</a>
+          
+          <h1 class="govuk-heading-xl">{{ court.name }}</h1>
+          
+          {% if court.open === false %}
+            <div class="govuk-warning-text">
+              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+              <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                This court is now closed
+              </strong>
+            </div>
+          {% endif %}
+          
+          {% if court.urgent_message %}
+            <div class="govuk-inset-text govuk-!-margin-bottom-6">
+              {{ court.urgent_message }}
+            </div>
+          {% endif %}
+          
+          {% if court.info %}
+            <h2 class="govuk-heading-m">About this court</h2>
+            <p class="govuk-body">{{ court.info }}</p>
+          {% endif %}
+          
+          {% if court.opening_times and court.opening_times.length > 0 %}
+            <h2 class="govuk-heading-m">Opening hours</h2>
+            <dl class="govuk-summary-list">
+              {% for time in court.opening_times %}
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">{{ time.description }}</dt>
+                  <dd class="govuk-summary-list__value">{{ time.hours }}</dd>
+                </div>
+              {% endfor %}
+            </dl>
+          {% endif %}
+          
+          {% if court.types and court.types.length > 0 %}
+            <h2 class="govuk-heading-m">Court types</h2>
+            <ul class="govuk-list govuk-list--bullet">
+              {% for type in court.types %}
+                <li>{{ type.name }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          
+          <h2 class="govuk-heading-m">Court details</h2>
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Court slug</dt>
+              <dd class="govuk-summary-list__value">{{ court.slug }}</dd>
+            </div>
+            {% if court.in_person !== undefined %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">In-person services</dt>
+                <dd class="govuk-summary-list__value">{{ court.in_person | yesNo }}</dd>
+              </div>
+            {% endif %}
+            {% if court.access_scheme !== undefined %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Access scheme</dt>
+                <dd class="govuk-summary-list__value">{{ court.access_scheme | yesNo }}</dd>
+              </div>
+            {% endif %}
+          </dl>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

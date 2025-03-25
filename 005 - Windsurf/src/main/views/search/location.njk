@@ -1,0 +1,94 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          {% if error %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+              <h2 class="govuk-error-summary__title" id="error-summary-title">
+                {{ errorTitle | default('There is a problem') }}
+              </h2>
+              <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                  <li>
+                    <a href="#court-name">{{ error }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+          
+          <h1 class="govuk-heading-xl">What is the name or address of the court or tribunal?</h1>
+          
+          <p class="govuk-body">The name of the court or tribunal can be found on a letter, email or text from us.</p>
+          
+          <form method="GET" action="/courts">
+            <div class="govuk-form-group {% if error %}govuk-form-group--error{% endif %}">
+              <label class="govuk-label" for="court-name">
+                Enter a court name, address, town or city
+              </label>
+              <div id="court-name-hint" class="govuk-hint">
+                For example, Blackburn Family Court.
+              </div>
+              {% if error %}
+                <p id="court-name-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{ error }}
+                </p>
+              {% endif %}
+              <input class="govuk-input {% if error %}govuk-input--error{% endif %}" id="court-name" name="courtName" type="text" aria-describedby="court-name-hint {% if error %}court-name-error{% endif %}" value="{{ previousValues.courtName }}">
+            </div>
+            
+            <button class="govuk-button" data-module="govuk-button">
+              Continue
+            </button>
+          </form>
+          
+          {% if results and results.length > 0 %}
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            
+            <h2 class="govuk-heading-m">Courts or tribunals matching "{{ query }}"</h2>
+            <p class="govuk-body">We found {{ results.length }} courts or tribunals matching your search.</p>
+            
+            <ul class="govuk-list">
+              {% for court in results %}
+                <li class="govuk-!-padding-top-6 govuk-!-padding-bottom-6 govuk-!-margin-bottom-0" style="border-bottom: 1px solid #b1b4b6;">
+                  <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+                    <a href="/courts/{{ court.slug }}" class="govuk-link">{{ court.name }}</a>
+                  </h3>
+                  {% if court.addresses and court.addresses.length > 0 %}
+                    {% set address = court.addresses[0] %}
+                    <p class="govuk-body">
+                      {% for line in address.address_lines %}
+                        {{ line }}{% if not loop.last %}, {% endif %}
+                      {% endfor %}
+                      {% if address.town %}, {{ address.town }}{% endif %}
+                      {% if address.county %}, {{ address.county }}{% endif %}
+                      {% if address.postcode %}, {{ address.postcode }}{% endif %}
+                    </p>
+                  {% endif %}
+                  
+                  {% if court.dx_number %}
+                    <p class="govuk-body">DX: {{ court.dx_number }}</p>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% elif query %}
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            
+            <h2 class="govuk-heading-m">No results found</h2>
+            <p class="govuk-body">No courts or tribunals found matching "{{ query }}".</p>
+            <p class="govuk-body">Try:</p>
+            <ul class="govuk-list govuk-list--bullet">
+              <li>checking your spelling</li>
+              <li>using fewer keywords</li>
+              <li>searching for a different location</li>
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "template.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% block pageTitle %}
+  {{ court.name }} - Find a court or tribunal - GOV.UK
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back to search results",
+    href: "/courts?search=" + (searchQuery or '')
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">{{ court.name }}</h1>
+
+        {% if court.open === false %}
+          {{ govukWarningText({
+            text: "This court is now closed",
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
+
+        {% if court.urgent_message %}
+          <div class="govuk-panel govuk-panel--warning">
+            <h2 class="govuk-heading-m">Important information</h2>
+            <p class="govuk-body">{{ court.urgent_message }}</p>
+          </div>
+        {% endif %}
+
+        {% if court.info %}
+          <div class="govuk-body">{{ court.info | safe }}</div>
+        {% endif %}
+
+        {% if court.image_file %}
+          <div class="govuk-!-margin-bottom-6">
+            <img src="https://factaat.blob.core.windows.net/images/{{ court.image_file }}" alt="Image of {{ court.name }}" class="govuk-!-width-full">
+          </div>
+        {% endif %}
+
+        {% if court.addresses and court.addresses.length > 0 %}
+          <h2 class="govuk-heading-m">Address</h2>
+          {% for address in court.addresses %}
+            <div class="govuk-!-margin-bottom-6">
+              <h3 class="govuk-heading-s">{{ address.type }}</h3>
+              <p class="govuk-body">
+                {% for line in address.address_lines %}
+                  {{ line }}<br>
+                {% endfor %}
+                {{ address.town }}<br>
+                {{ address.postcode }}
+              </p>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% if court.lat and court.lon %}
+          <h2 class="govuk-heading-m">Location</h2>
+          <div class="govuk-!-margin-bottom-6">
+            <div id="map" class="court-map" style="height: 300px; width: 100%;"></div>
+            <p class="govuk-body govuk-!-margin-top-2">
+              <a href="https://maps.google.com/?q={{ court.lat }},{{ court.lon }}" class="govuk-link" target="_blank" rel="noopener noreferrer">View on Google Maps</a>
+            </p>
+          </div>
+
+          {% if court.directions %}
+            <div class="govuk-!-margin-bottom-6">
+              <h3 class="govuk-heading-s">Directions</h3>
+              <p class="govuk-body">{{ court.directions }}</p>
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if court.opening_times and court.opening_times.length > 0 %}
+          <h2 class="govuk-heading-m">Opening hours</h2>
+          {% for time in court.opening_times %}
+            <div class="govuk-!-margin-bottom-3">
+              <h3 class="govuk-heading-s">{{ time.description }}</h3>
+              <p class="govuk-body">{{ time.hours }}</p>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% if court.contacts and court.contacts.length > 0 %}
+          <h2 class="govuk-heading-m">Contact information</h2>
+          {% for contact in court.contacts %}
+            <div class="govuk-!-margin-bottom-3">
+              <h3 class="govuk-heading-s">{{ contact.explanation }}</h3>
+              <p class="govuk-body">{{ contact.number }}</p>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% if court.emails and court.emails.length > 0 %}
+          <h2 class="govuk-heading-m">Email</h2>
+          {% for email in court.emails %}
+            <div class="govuk-!-margin-bottom-3">
+              <h3 class="govuk-heading-s">{{ email.explanation }}</h3>
+              <p class="govuk-body"><a href="mailto:{{ email.address }}" class="govuk-link">{{ email.address }}</a></p>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% if court.dx_number and court.dx_number.length > 0 %}
+          <h2 class="govuk-heading-m">DX numbers</h2>
+          <ul class="govuk-list">
+            {% for dx in court.dx_number %}
+              <li>{{ dx }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if court.areas_of_law and court.areas_of_law.length > 0 %}
+          <h2 class="govuk-heading-m">Areas of law</h2>
+          <ul class="govuk-list">
+            {% for area in court.areas_of_law %}
+              <li>
+                <h3 class="govuk-heading-s">{{ area.name }}</h3>
+                {% if area.external_link %}
+                  <p class="govuk-body">
+                    <a href="{{ area.external_link }}" class="govuk-link" target="_blank" rel="noopener noreferrer">
+                      {{ area.external_link_desc }}
+                    </a>
+                  </p>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if court.facilities and court.facilities.length > 0 %}
+          <h2 class="govuk-heading-m">Facilities</h2>
+          <ul class="govuk-list">
+            {% for facility in court.facilities %}
+              <li>
+                <h3 class="govuk-heading-s">{{ facility.name }}</h3>
+                <p class="govuk-body">{{ facility.description }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if court.additional_links and court.additional_links.length > 0 %}
+          <h2 class="govuk-heading-m">Additional information</h2>
+          <ul class="govuk-list">
+            {% for link in court.additional_links %}
+              <li>
+                <a href="{{ link.url }}" class="govuk-link" target="_blank" rel="noopener noreferrer">{{ link.display_name }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <p class="govuk-body govuk-!-margin-top-6">
+          <a href="/courts" class="govuk-link">Return to search</a>
+        </p>
+      </div>
+    </div>
+  </main>
+</div>
+
+{% if court.lat and court.lon %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if OpenLayers is available
+    if (typeof ol !== 'undefined') {
+      const map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([{{ court.lon }}, {{ court.lat }}]),
+          zoom: 15
+        })
+      });
+      
+      // Add marker
+      const marker = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([{{ court.lon }}, {{ court.lat }}]))
+      });
+      
+      const vectorSource = new ol.source.Vector({
+        features: [marker]
+      });
+      
+      const markerVectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: new ol.style.Style({
+          image: new ol.style.Icon({
+            anchor: [0.5, 1],
+            src: '/assets/images/marker-icon.png'
+          })
+        })
+      });
+      
+      map.addLayer(markerVectorLayer);
+    }
+  });
+</script>
+{% endif %}
+{% endblock %} 

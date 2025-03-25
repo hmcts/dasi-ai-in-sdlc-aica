@@ -1,0 +1,70 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "macros/error-summary.njk" import errorSummary %}
+
+{% extends "template.njk" %}
+
+{% block pageTitle %}
+  {% if errors %}
+    {{ errorTitle }}
+  {% endif %}
+  What do you want to do?
+{% endblock %}
+
+{% block content %}
+{% if errors %}
+  {{ errorSummary(error.title, error.text, "#nearest-court") }}
+{% endif %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <form method="POST">
+      {{ govukRadios({
+        idPrefix: "choose-action",
+        name: "chooseAction",
+        fieldset: {
+          legend: {
+            text: "What do you want to do?",
+            classes: "govuk-fieldset__legend--l",
+            isPageHeading: true
+          }
+        },
+        hint: {
+          text: hint
+        },
+        errorMessage: { text: error.text } if errors,
+        items: [
+          {
+            id: "nearest-court",
+            text: "Find the nearest court or tribunal",
+            value: "nearest"
+          },
+          {
+            id: "document-court",
+            text: "Find a court or tribunal to send documents to",
+            value: "documents"
+          },
+          {
+             id: "update-court",
+             text: "Contact a court or tribunal to get an update on your application",
+             value: "update"
+          },
+          {
+             divider: "or"
+          },
+          {
+             id: "not-listed",
+             text: "It is not listed here",
+             value: "not-listed"
+          }
+        ]
+      }) }}
+      {{ govukButton({
+        text: "Continue",
+        classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8 continue"
+      }) }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

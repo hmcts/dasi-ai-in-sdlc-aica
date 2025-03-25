@@ -1,0 +1,349 @@
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% extends "template.njk" %}
+
+{% block pageTitle %}
+  {{ title | safe }}
+{% endblock %}
+
+{% block content %}
+  <script type="application/ld+json">{{ seoMetadata | dump | safe }}</script>
+
+  <div class="govuk-grid-row court-tribunal-details">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">
+        {{ results.name }}
+      </h1>
+
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-row">
+          <div id="not-in-person">
+            <div class="govuk-body-m">
+              {{ notInPersonP1|safe }}
+            </div>
+            <h2 class="govuk-heading-l postal-address">Contact us</h2>
+            {% for address in results.addresses %}
+
+              {% set descLabel = "" %}
+
+              {% for areaOfLaw in address.fields_of_law.areas_of_law %}
+
+                {% if loop.index == 1 %}
+
+                  {% if address.fields_of_law.courts.length > 0 and (address.fields_of_law.areas_of_law.length == 1)  %}
+                    {% set descLabel = descLabel + areaOfLaw + ', ' %}
+                  {% else %}
+                    {% set descLabel = descLabel + areaOfLaw %}
+                  {% endif %}
+
+                {% elif loop.index == (address.fields_of_law.areas_of_law.length) %}
+
+                  {% if address.fields_of_law.courts.length > 0 %}
+                    {% set descLabel = descLabel + ', ' +  areaOfLaw %}
+                  {% else %}
+                    {% set descLabel = descLabel + ' or ' +  areaOfLaw %}
+                  {% endif %}
+
+                {% else %}
+                  {% set descLabel = descLabel + ', ' + areaOfLaw %}
+                {% endif %}
+
+              {% endfor %}
+
+              {% if address.fields_of_law.courts.length == 0 %}
+                {% set descLabel = descLabel + ' cases' %}
+              {% endif %}
+
+              {% for courtType in address.fields_of_law.courts %}
+
+                {% if loop.index == 1 %}
+                  {% if address.fields_of_law.courts.length == 1 and (address.fields_of_law.areas_of_law.length > 1) %}
+                    {% set descLabel = descLabel + ' or ' + courtType + ' cases' %}
+                  {% elif address.fields_of_law.courts.length == 1 and (address.fields_of_law.areas_of_law.length == 0) %}
+                    {% set descLabel = descLabel + courtType + ' cases' %}
+                  {% else %}
+                    {% if address.fields_of_law.areas_of_law.length > 1 %}
+                      {% set descLabel = descLabel + ', ' + courtType %}
+                    {% else %}
+                      {% set descLabel = descLabel + courtType %}
+                    {% endif %}
+                  {% endif %}
+                {% elif loop.index == (address.fields_of_law.courts.length) %}
+                  {% if address.fields_of_law.courts.length > 1 %}
+                    {% set descLabel = descLabel + ' or ' +  courtType + ' cases' %}
+                  {% else %}
+                    {% set descLabel = descLabel + courtType + ' cases' %}
+                  {% endif %}
+                {% else %}
+                  {% set descLabel = descLabel + ', ' + courtType %}
+                {% endif %}
+
+              {% endfor %}
+
+              {% set descLabel = descLabel + ' cases' %}
+
+              {% if results.addresses.length == 2 %}
+                <div class="govuk-grid-column-one-half multiple-addresses">
+                  <h2 class="govuk-heading-l">
+                    {{ address.type }}:
+                  </h2>
+                  <h2 class="govuk-heading-s">
+                    {{ descLabel }}
+                  </h2>
+              {% elif results.addresses.length == 3 %}
+                <div class="govuk-grid-column-one-third multiple-addresses">
+                  <h2 class="govuk-heading-l">
+                    {{ address.type }}:
+                  </h2>
+                  <h2 class="govuk-heading-s">
+                    {{ descLabel }}
+                  </h2>
+              {% else %}
+                <h2 class="govuk-heading-l single-address">
+                  {{ address.type }}:
+                </h2>
+                <h3 class="govuk-heading-m">Address</h3>
+              {% endif %}
+                <p class="govuk-body-m address">
+                  {% for addressLine in address.address_lines %}
+                    {{ addressLine }}<br>
+                  {% endfor %}
+                  {{ address.town }}<br>
+                  {{ address.postcode }}
+                </p>
+              {% if results.addresses.length > 1 %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if results['urgent_message'] %}
+          <div class="urgent-message">
+            <div class="warning-symbol warning-symbol-div">
+              <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            </div>
+            <div>
+              <strong class="govuk-warning-text__text urgent-message-text">{{ results['urgent_message'] | safe }}</strong>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if results.info %}
+          <div class="govuk-grid-row" id="additional-info">
+            <h3 class="govuk-heading-m">Additional information</h3>
+            <div class="govuk-body-m">
+              {{ results.info | safe }}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if results.enquiries and results.enquiries.phone.length %}
+          <div class="govuk-grid-row .contacts" id="contacts">
+            <h4 class="govuk-heading-m">
+              {% if results.enquiries.fax.length %}
+                Telephone and fax
+              {% else %}
+                Telephone
+              {% endif %}
+            </h4>
+
+            <dl class="govuk-summary-list">
+              {% for telephone in results.enquiries.phone %}
+                <div class="govuk-summary-list__row">
+                  <dd class="govuk-summary-list__key">
+                    {{ telephone.description}}
+                  </dd>
+                  <dd class="govuk-summary-list__value">
+                   <a class="govuk-link" href="tel:{{ telephone.number }}">{{ telephone.number }}</a>
+                   {% if telephone.explanation %}
+                     <p class="govuk-body-m">({{ telephone.explanation }})</p>
+                   {% endif %}
+                  </dd>
+                </div>
+              {% endfor %}
+
+              {% for telephone in results.enquiries.welshPhone %}
+                <div class="govuk-summary-list__row">
+                  <dd class="govuk-summary-list__key">
+                    {{ telephone.description }}
+                  </dd>
+                  <dd class="govuk-summary-list__value">
+                   <a class="govuk-link" href="tel:{{ telephone.number }}">{{ telephone.number }}</a>
+                   {% if telephone.explanation %}
+                     <p class="govuk-body-m">({{ telephone.explanation }})</p>
+                   {% endif %}
+                  </dd>
+                </div>
+              {% endfor %}
+
+              {% for fax in results.enquiries.fax %}
+                <div class="govuk-summary-list__row">
+                  <dd class="govuk-summary-list__key">
+                    {{ fax.description }}
+                  </dd>
+                  <dd class="govuk-summary-list__value">
+                    <a class="govuk-link" href="tel:{{ fax.number }}">{{ fax.number }}</a>
+                    {% if fax.explanation %}
+                      <p class="govuk-body-m">({{ fax.explanation }})</p>
+                    {% endif %}
+                  </dd>
+                </div>
+              {% endfor %}
+            </dl>
+
+            <p class="govuk-body-m">
+              <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="https://www.gov.uk/call-charges">
+                Find out about call charges (opens in new tab)
+              </a>
+            </p>
+            {% if results.slug === 'county-court-business-centre-ccbc' or results.slug ==='county-court-money-claims-centre-ccmcc' %}
+              <p class="govuk-body-m">
+                <a class="govuk-link" rel="noreferrer noopener" target="_blank"
+                   href="https://www.gov.uk/guidance/hmcts-civil-business-centres-performance-information">
+                  Processing or reply times (opens in new tab)
+                </a>
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if results.application_updates and results.application_updates.length %}
+          <div class="govuk-grid-row" id="applicationUpdates">
+            <h4 class="govuk-heading-m">Get an update on your application</h4>
+            <dl class="govuk-summary-list">
+              {% for applicationUpdate in results.application_updates %}
+                <div class="govuk-summary-list__row">
+                  <dd class="govuk-summary-list__key">
+                    {{ applicationUpdate.type }}
+                  </dd>
+                  <dd class="govuk-summary-list__value">
+                    {% if applicationUpdate.email %}
+                      <a class="govuk-link" href="mailto:{{ applicationUpdate.email }}">{{ applicationUpdate.email }}</a>
+                    {% else %}
+                      <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="{{ applicationUpdate.external_link }}">{{ applicationUpdate.external_link_description }}</a><span class="govuk-visually-hidden"> (opens in new tab)</span>
+                    {% endif %}
+                  </dd>
+                </div>
+              {% endfor %}
+            </dl>
+          </div>
+        {% endif %}
+
+        {% if results.emails and results.emails.length %}
+          <div class="govuk-grid-row .emails" id="emails">
+            <h4 class="govuk-heading-m">Email</h4>
+            <dl class="govuk-summary-list">
+              {% for email in results.emails %}
+                <div class="govuk-summary-list__row">
+                  <dd class="govuk-summary-list__key">
+                    {{ email.description }}
+                  </dd>
+                  <dd class="govuk-summary-list__value">
+                    <a class="govuk-link" href="mailto:{{ email.address }}">{{ email.address }}</a>
+                    {% if email.explanation %}
+                      <p class="govuk-body-m">({{ email.explanation }})</p>
+                    {% endif %}
+                  </dd>
+                </div>
+              {% endfor %}
+            </dl>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="govuk-grid-column-one-third side-content">
+        {% if (results['areas_of_law'] and results['areas_of_law'].length > 0) or (results.additionalLinks.findOutMoreAbout and results.additionalLinks.findOutMoreAbout.length) %}
+          <div class="govuk-grid-row" id="areas-of-law">
+            <h3 class="govuk-heading-m">This location handles</h3>
+            <ul class="govuk-list">
+              {% for area in results['areas_of_law'] | sort(attribute="name") %}
+                {% if area['display_name'] %}
+                  {% set displayName = area['display_name'] %}
+                {% else %}
+                  {% set displayName = area.name %}
+                {% endif %}
+                {% if area['display_external_link'] %}
+                  {% set externalLink = area['display_external_link'] %}
+                {% else %}
+                  {% set externalLink = area['external_link'] %}
+                {% endif %}
+                <li>
+                  {% if externalLink %}
+                    <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="{{ externalLink }}">{{ displayName }}</a><span class="govuk-visually-hidden"> (opens in new tab)</span>
+                  {% else %}
+                    <p>
+                      {{displayName}}
+                    </p>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if results.additional_links and results.additional_links.length %}
+          <div class="govuk-grid-row" id="find-out-more-about">
+            <h3 class="govuk-heading-m">Find out more about</h3>
+            <ul class="govuk-list">
+              {% for additionalLink in results.additional_links %}
+                <li>
+                  <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="{{ additionalLink.url }}">{{ additionalLink.description }}</a><span class="govuk-visually-hidden"> (opens in new tab)</span>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="govuk-grid-row">
+          <h3 class="govuk-heading-m">Make a complaint</h3>
+          <p class="govuk-body-m">
+            <a class="govuk-link" rel="noreferrer noopener" target="_blank"
+               href="https://www.gov.uk/government/organisations/hm-courts-and-tribunals-service/about/complaints-procedure">Contact us to make a complaint</a><span class="govuk-visually-hidden"> (opens in new tab)</span>
+          </p>
+        </div>
+
+        {% if results.crown_location_code or results.county_location_code or results.magistrates_location_code or (results['dx_number'] and results['dx_number'].length > 0) %}
+          <div class="govuk-grid-row" id="location-codes">
+            <h3 class="govuk-heading-m">Court codes for legal professionals</h3>
+            {% if results.crown_location_code %}
+              <p class="govuk-body-m">
+                Crown Court location code: <span
+                  class="govuk-body-m">{{ results.crown_location_code }}</span>
+              </p>
+            {% endif %}
+            {% if results.county_location_code %}
+              <p class="govuk-body-m">
+                County Court location code: <span
+                  class="govuk-body-m">{{ results.county_location_code }}</span>
+              </p>
+            {% endif %}
+            {% if results.magistrates_location_code %}
+              <p class="govuk-body-m">
+                Magistrates' Court location code: <span
+                  class="govuk-body-m">{{ results.magistrates_location_code }}</span>
+              </p>
+            {% endif %}
+            {% if results.family_location_code %}
+              <p class="govuk-body-m">
+                Family Court location code: <span class="govuk-body-m">{{ results.family_location_code }}</span>
+              </p>
+            {% endif %}
+            {% if results.tribunal_location_code %}
+              <p class="govuk-body-m">
+                Tribunal location code: <span class="govuk-body-m">{{ results.tribunal_location_code }}</span>
+              </p>
+            {% endif %}
+            {% if results['dx_number'] and results['dx_number'].length > 0 %}
+              {% for dx in results['dx_number'] %}
+                <p class="govuk-body-m dx-number">
+                  DX: <span class="govuk-body-m">{{ dx }}</span>
+                </p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
