@@ -1,0 +1,59 @@
+server:
+  port: 8181
+
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+spring:
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        profile:
+          tenant-id: ${TENANT_ID}
+        credential:
+          client-id: ${CLIENT_ID}
+          client-secret: ${CLIENT_SECRET}
+        app-id-uri: ${APP_URI}
+        authorization-clients:
+          accountManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${ACCOUNT_MANAGEMENT_AZ_API}/.default
+          dataManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${DATA_MANAGEMENT_AZ_API}/.default
+  config:
+    import: "optional:configtree:/mnt/secrets/pip-ss-kv/"
+  application:
+    name: PIP Channel Management
+
+azure:
+  blob:
+    connection-string: ${CONNECTION_STRING}
+    storage-account-name: ${STORAGE_ACCOUNT_NAME}
+    container-name: publications
+  managed-identity:
+    client-id: ${MANAGED_IDENTITY_CLIENT_ID:}
+
+service-to-service:
+  account-management: ${ACCOUNT_MANAGEMENT_URL:https://pip-account-management.staging.platform.hmcts.net}
+  subscription-management: ${SUBSCRIPTION_MANAGEMENT_URL:https://pip-subscription-management.staging.platform.hmcts.net}
+  data-management: ${DATA_MANAGEMENT_URL:https://pip-data-management.staging.platform.hmcts.net}
+
+third-party-api:
+  courtel: ${COURTEL_API:testCourtelApi}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/
+
+pdf:
+  font: /opt/app/openSans.ttf

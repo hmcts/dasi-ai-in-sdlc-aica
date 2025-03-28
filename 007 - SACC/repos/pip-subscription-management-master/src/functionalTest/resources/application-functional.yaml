@@ -1,0 +1,12 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  flyway:
+    enabled: true
+  jpa:
+    hibernate:
+      # Set to update for functional tests, so it creates the environment in H2
+      ddl-auto: update
+
+dbMigration:
+  runOnStartup: true

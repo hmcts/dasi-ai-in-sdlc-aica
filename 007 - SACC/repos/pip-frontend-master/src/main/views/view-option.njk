@@ -1,0 +1,66 @@
+{% extends "template.njk" %}
+{% from "macros/common-components.njk" import goBack, submitButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block pageTitle %}
+    {{ title }}
+{% endblock %}
+
+{% block beforeContent %}
+    {{ super() }}
+    {{ goBack(text = backButton) }}
+{% endblock %}
+
+{% block content %}
+    {% if showError %}
+        {{ govukErrorSummary({
+            titleText: error.title,
+            errorList: [
+                {
+                    text: error.text,
+                    href: "#view-choice"
+                }
+            ]
+        }) }}
+    {% endif %}
+    <form method="post">
+        {{ govukRadios({
+            idPrefix: "view-choice",
+            name: "view-choice",
+            fieldset: {
+                legend: {
+                    text: radioLegend,
+                    isPageHeading: true,
+                    classes: "govuk-fieldset__legend--l"
+                }
+            },
+            items: [
+                {
+                    value: "search",
+                    html: "<b>"+ radio1 +"</b>",
+                    hint: {
+                      text: radio1Hint
+                    }
+                },
+                {
+                    value: "sjp",
+                    html: "<b>"+ radio2 +"</b>",
+                    hint: {
+                      text: radio2Hint
+                    }
+                }
+            ]
+        }) }}
+        {{ submitButton(continueButton) }}
+    </form>
+{% endblock %}
+{% block bodyEnd %}
+    {{ super() }}
+    <script>
+      if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+      }
+    </script>
+{% endblock %}
+

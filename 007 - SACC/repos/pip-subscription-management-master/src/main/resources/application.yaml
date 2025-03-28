@@ -1,0 +1,97 @@
+server:
+  port: 4550
+
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+
+#If you use a database then uncomment below lines and update db properties accordingly
+spring:
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        profile:
+          tenant-id: ${TENANT_ID}
+        credential:
+          client-id: ${CLIENT_ID}
+          client-secret: ${CLIENT_SECRET}
+        app-id-uri: ${APP_URI}
+        authorization-clients:
+          dataManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${DATA_MANAGEMENT_AZ_API}/.default
+          accountManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${ACCOUNT_MANAGEMENT_AZ_API}/.default
+          channelManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${CHANNEL_MANAGEMENT_AZ_API}/.default
+          publicationServicesApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${PUBLICATION_SERVICES_AZ_API}/.default
+
+  config:
+    import: "optional:configtree:/mnt/secrets/pip-ss-kv/"
+  application:
+    name: PIP Subscription Management
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    properties:
+      charSet: UTF-8
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 10000
+      poolName: ConnectionPool
+      maxLifetime: 7200000
+      connectionTimeout: 30000
+  jpa:
+    show-sql: 'false'
+    properties:
+      hibernate:
+        format_sql: 'true'
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    database: POSTGRESQL
+    hibernate:
+      # Updated to 'none'. This is the default, and prevents auto updates in production
+      ddl-auto: ${DB_UPDATE:none}
+
+  # This is needed as locally, all tables are in a single schema. Flyway is only enabled on the clusters by default
+  flyway:
+    enabled: ${ENABLE_FLYWAY:false}
+
+system-admin-provenance-id: ${SYSTEM_ADMIN_PROVENANCE_ID}
+service-to-service:
+  data-management: ${DATA_MANAGEMENT_URL:https://pip-data-management.staging.platform.hmcts.net}
+  account-management: ${ACCOUNT_MANAGEMENT_URL:https://pip-account-management.staging.platform.hmcts.net}
+  channel-management: ${CHANNEL_MANAGEMENT_URL:https://pip-channel-management.staging.platform.hmcts.net}
+  publication-services: ${PUBLICATION_SERVICES_URL:https://pip-publication-services.staging.platform.hmcts.net}
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/
+
+dbMigration:
+  # When true, the app will run DB migration on startup.
+  # Otherwise, it will just check if all migrations have been applied (and fail to start if not).
+  runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:false}
+
+# Used to conditionally enable testing support API
+testingSupport:
+  enableApi: ${ENABLE_TESTING_SUPPORT_API:true}

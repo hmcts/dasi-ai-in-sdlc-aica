@@ -1,0 +1,8 @@
+{
+    "secrets": {
+        "pip-ss-kv": {
+            "CLIENT_ID": "1234",
+            "CLIENT_SECRET": "12345"
+        }
+    }
+}

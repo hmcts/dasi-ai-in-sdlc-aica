@@ -1,0 +1,12 @@
+{
+    "title": "Search result",
+    "resultsCount": " result(s) successfully found",
+    "backButton": "Back",
+    "table": {
+        "column0Header": "Select a result",
+        "column1Header": "Case name",
+        "column2Header": "Party name(s)",
+        "column3Header": "Reference number"
+    },
+    "select": "Select"
+}

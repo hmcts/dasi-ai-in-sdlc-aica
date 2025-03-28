@@ -1,0 +1,116 @@
+{
+  "LocalizedStrings": [
+    {
+      "ElementType": "ClaimType",
+      "ElementId": "ReadOnlyEmail",
+      "StringId": "DisplayName",
+      "Override": true,
+      "Value": "Cyfeiriad e-bost"
+    },
+    {
+      "ElementType": "ClaimType",
+      "ElementId": "email",
+      "StringId": "DisplayName",
+      "Override": true,
+      "Value": "Cyfeiriad e-bost"
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "ver_fail_code_expired",
+      "Override": true,
+      "Value": "Mae'r cod hwnnw wedi dod i ben. Gofynnwch am god newydd."
+    },
+    {
+      "ElementType": "ErrorMessage",
+      "ElementId": null,
+      "StringId": "UserMessageIfChallengeExpired",
+      "Override": true,
+      "Value": "Mae'r cod hwnnw wedi dod i ben. Gofynnwch am god newydd."
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "initial_intro",
+      "Override": true,
+      "Value": "Rhowch y manylion canlynol."
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "ver_intro_msg",
+      "Override": true,
+      "Value": "Rhaid dilysu. Cliciwch ar y botwm Anfon."
+    },
+    {
+      "ElementType": "DisplayControl",
+      "ElementId": "emailVerificationControl",
+      "StringId": "but_send_code",
+      "Override": true,
+      "Value": "Anfon cod dilysu"
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "button_cancel",
+      "Override": true,
+      "Value": "Canslo"
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "ver_input",
+      "Override": true,
+      "Value": "Cod dilysu"
+    },
+    {
+      "ElementType": "DisplayControl",
+      "ElementId": "emailVerificationControl",
+      "StringId": "but_verify_code",
+      "Override": true,
+      "Value": "Dilysu’r cod"
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "ver_but_resend",
+      "Override": true,
+      "Value": "Anfon cod newydd"
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "ver_fail_retry",
+      "Override": true,
+      "Value": "Mae'r cod yna'n anghywir. Rhowch gynnig arall arni."
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "ver_success_msg",
+      "Override": true,
+      "Value": "E-bost wedi'i ddilysu. Gallwch chi nawr fwrw ymlaen."
+    },
+    {
+      "ElementType": "ErrorMessage",
+      "ElementId": null,
+      "StringId": "UserMessageIfVerificationFailedNoRetry",
+      "Override": true,
+      "Value": "Rydych chi wedi gormod o gynigion anghywir. Rhowch gynnig arall arni rywbryd eto."
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "button_continue",
+      "Override": true,
+      "Value": "Parhau"
+    },
+    {
+      "ElementType": "UxElement",
+      "ElementId": null,
+      "StringId": "required_field",
+      "Override": true,
+      "Value": "Mae angen yr wybodaeth hon."
+    }
+  ]
+}

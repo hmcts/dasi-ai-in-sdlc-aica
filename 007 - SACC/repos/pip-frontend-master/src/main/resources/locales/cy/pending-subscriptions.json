@@ -1,0 +1,20 @@
+{
+    "title": "Cadarnhewch eich tanysgrifiadau e-bost",
+    "removeText": "Dileu",
+    "table": {
+        "header1": "Enw'r achos",
+        "header2": "Enw’r parti (partïon)",
+        "header3": "Cyfeirnod",
+        "header4": "Camau gweithredu"
+    },
+    "buttonText": "Cadarnhau tanysgrifiadau",
+    "addOther_link": "/subscription-add",
+    "addOther_text": "Ychwanegu tanysgrifiad e-bost arall",
+    "buttonAddText": "Ychwanegu tanysgrifiadau",
+    "error": {
+        "title": "Mae yna broblem",
+        "message": "Mae angen o leiaf un tanysgrifiad."
+    },
+    "backButton": "Yn ôl",
+    "courtTribunalName": "Enw’r llys neu’r tribiwnlys"
+}

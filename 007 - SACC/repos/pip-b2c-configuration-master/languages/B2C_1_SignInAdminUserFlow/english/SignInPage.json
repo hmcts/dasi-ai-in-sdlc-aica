@@ -1,0 +1,18 @@
+{
+  "LocalizedStrings": [
+    {
+      "ElementType": "ErrorMessage",
+      "ElementId": null,
+      "StringId": "UserMessageIfClaimsPrincipalDoesNotExist",
+      "Override": true,
+      "Value": "Invalid username or password."
+    },
+    {
+      "ElementType": "ErrorMessage",
+      "ElementId": null,
+      "StringId": "UserMessageIfInvalidPassword",
+      "Override": true,
+      "Value": "Invalid username or password."
+    }
+  ]
+}

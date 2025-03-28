@@ -1,0 +1,58 @@
+server:
+  port: 8050
+
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.reform.pip.cron.trigger.controllers
+
+spring:
+  main:
+    web-application-type: servlet
+  config:
+    import: "optional:configtree:/mnt/secrets/pip-ss-kv/"
+  application:
+    name: PIP Cron Trigger
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        profile:
+          tenant-id: ${TENANT_ID}
+        credential:
+          client-id: ${CLIENT_ID}
+          client-secret: ${CLIENT_SECRET}
+        authorization-clients:
+          dataManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${DATA_MANAGEMENT_AZ_API}/.default
+          accountManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${ACCOUNT_MANAGEMENT_AZ_API}/.default
+          publicationServicesApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${PUBLICATION_SERVICES_AZ_API}/.default
+          subscriptionManagementApi:
+              authorization-grant-type: client_credentials
+              scopes:
+                - ${SUBSCRIPTION_MANAGEMENT_AZ_API}/.default
+
+app:
+  trigger-type: ${TRIGGER_TYPE}
+
+service-to-service:
+  data-management: ${DATA_MANAGEMENT_URL:https://pip-data-management.staging.platform.hmcts.net/}
+  account-management: ${ACCOUNT_MANAGEMENT_URL:https://pip-account-management.staging.platform.hmcts.net/}
+  subscription-management: ${SUBSCRIPTION_MANAGEMENT_URL:https://pip-subscription-management.staging.platform.hmcts.net/}
+  publication-services: ${PUBLICATION_SERVICES_URL:https://pip-publication-services.staging.platform.hmcts.net/}
