@@ -1,0 +1,87 @@
+#!groovy
+//noinspection GroovyUnusedAssignment
+@Library("Infrastructure") _
+
+def product = "pip"
+def component = "shared-infrastructure"
+
+def setupTerraformSecret() {
+
+  def bootstap_env = env.ENV == "prod" || env.ENV == "demo" || env.ENV == "sbox" ? env.ENV : "stg"
+  def secret_env = env.ENV == "prod" ? "-prod" : ""
+
+  azureKeyVault(
+    keyVaultURL: "https://pip-bootstrap-${bootstap_env}-kv.vault.azure.net/",
+    secrets: [
+      secret("b2c-jenkins${secret_env}-client-secret", 'B2C_CLIENT_SECRET'),
+      secret("b2c-jenkins${secret_env}-client-id", 'B2C_CLIENT_ID'),
+      secret("b2c-jenkins${secret_env}-tenant-id", 'B2C_TENANT_ID'),
+      secret('pip-frontend-github-object-id', "GITHUB_RUNNER_OBJECT_ID")
+    ]) {
+      env.TF_VAR_B2C_CLIENT_SECRET = "${B2C_CLIENT_SECRET}"
+      env.TF_VAR_B2C_TENANT_ID = "${B2C_TENANT_ID}"
+      env.TF_VAR_B2C_CLIENT_ID = "${B2C_CLIENT_ID}"
+      env.TF_VAR_GITHUB_RUNNER_OBJECT_ID = "${GITHUB_RUNNER_OBJECT_ID}"
+    }
+}
+
+static Map<String, Object> secret(String secretName, String envVariable) {
+  [
+    $class     : 'AzureKeyVaultSecret',
+    secretType : 'Secret',
+    name       : secretName,
+    envVariable: envVariable
+  ]
+}
+
+static String unlockRg(String envName){
+  def unlockScript = "environment='" +  envName + "';" +
+        'rgName="pip-ss-${environment}-rg";' +
+        'lockName="${environment}-lock";' +
+        '' +
+        'az login --identity;' +
+        'az account set -s "DTS-SHAREDSERVICES-${environment}";' +
+        '' +
+        'echo "Get ${lockName} lock from ${rgName}";' +
+        'lock=$(az lock list --resource-group ${rgName} --query "[? contains(name, \'${lockName}\')].{name:name}" -o tsv);' +
+        '' +
+        '$($lock != "" && echo "Delete Lock ${lockName} on ${rgName}"; az lock delete --name ${lockName} --resource-group ${rgName} || echo "${lockName} on ${rgName} not found")'
+
+    return unlockScript;
+}
+
+def branchesToSync = ['perftest', 'demo']
+
+withInfraPipeline(product, component) {
+ syncBranchesWithMaster(branchesToSync)
+
+ onMaster() {
+    env.ENV = 'stg'
+  }
+  onPR() {
+    env.ENV = 'dev'
+  }
+  onDemo {
+    env.ENV = 'demo'
+  }
+  onPerftest {
+    env.ENV = 'perftest'
+  }
+  onIthc {
+    env.ENV = 'ithc'
+  }
+  setupTerraformSecret()
+
+  before('buildinfra:stg') {
+    sh "echo 'unlock RG stg'"
+    sh unlockRg("stg")
+  }
+  before('buildinfra:prod') {
+    sh "echo 'unlock RG prod'"
+    sh unlockRg("prod")
+
+    env.ENV = 'prod'
+    setupTerraformSecret()
+  }
+}
+

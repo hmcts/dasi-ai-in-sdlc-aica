@@ -1,0 +1,25 @@
+# Configuration File for 
+'main':
+    'version': '1.0'
+    'defaultllm': 'ollama'
+
+# Put your directories of interest in here...
+'directories':
+    'designDocs': './Documents/Design'
+    'standardsDocs': './Documents/Standards'
+    'sourcefiles': './repos'
+
+# Put your Postgres database details in here
+'database':
+    'databasetype': 'postgres'
+    'host': 'localhost'
+    'databasename': 'reqsdb'
+    'username': 'YourUserNameHere'
+    'password': 'YourPasswordHere'
+    'port': '5432'
+
+# Add any other config items you want in here
+
+
+
+   

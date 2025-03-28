@@ -1,0 +1,253 @@
+plugins {
+  id 'application'
+  id 'checkstyle'
+  id 'io.spring.dependency-management' version '1.1.2'
+  id 'jacoco'
+  id 'org.springframework.boot' version '3.0.9'
+  id 'org.owasp.dependencycheck' version '8.3.1'
+  id 'org.sonarqube' version '4.3.0.3225'
+  id 'pmd'
+  id 'org.flywaydb.flyway' version '9.21.1'
+  id 'io.freefair.lombok' version '8.1.0'
+  id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+}
+
+apply plugin: 'org.owasp.dependencycheck'
+apply plugin: 'org.sonarqube'
+
+group = 'uk.gov.hmcts.reform.pip'
+mainClassName = 'uk.gov.hmcts.reform.pip.data.management.Application'
+version = '0.0.1'
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
+
+
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven { url 'https://jitpack.io' }
+}
+
+sourceSets {
+  functionalTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/functionalTest/java')
+    }
+    resources.srcDir file('src/functionalTest/resources')
+  }
+
+  smokeTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/smokeTest/java')
+    }
+    resources.srcDir file('src/smokeTest/resources')
+  }
+}
+
+tasks.withType(JavaCompile) {
+  options.compilerArgs << "-Xlint:unchecked" << "-Werror"
+}
+
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+}
+
+tasks.withType(Test) {
+  useJUnitPlatform()
+
+  testLogging {
+    exceptionFormat = 'full'
+  }
+}
+
+test {
+  failFast = true
+}
+
+task functional(type: Test) {
+  description = "Runs functional tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.functionalTest.output.classesDirs
+  classpath = sourceSets.functionalTest.runtimeClasspath
+}
+
+task smoke(type: Test) {
+  description = "Runs Smoke Tests"
+  testClassesDirs = sourceSets.smokeTest.output.classesDirs
+  classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
+checkstyle {
+  maxWarnings = 0
+  toolVersion = '10.12.1'
+  getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
+}
+
+pmd {
+  toolVersion = "6.52.0"
+  sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.smokeTest]
+  reportsDir = file("$project.buildDir/reports/pmd")
+  // https://github.com/pmd/pmd/issues/876
+  ruleSets = []
+  ruleSetFiles = files("config/pmd/ruleset.xml")
+}
+
+configurations {
+  all {
+    exclude group: 'commons-logging', module: 'commons-logging'
+  }
+}
+
+jacoco {
+  toolVersion = "0.8.8"
+}
+
+jacocoTestReport {
+  executionData(test)
+  reports {
+    xml.required = true
+    csv.required = false
+    xml.outputLocation.set(file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml"))
+  }
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        minimum = 0.8
+      }
+    }
+  }
+}
+
+flyway {
+  url = System.getenv('FLYWAY_URL')
+  user = System.getenv('FLYWAY_USER')
+  password = System.getenv('FLYWAY_PASSWORD')
+  baselineOnMigrate = true
+  baselineVersion = '000'
+}
+
+task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+  baselineOnMigrate = true
+  if (project.hasProperty("dburl")) {
+    url = "jdbc:postgresql://${dburl}"
+  }
+}
+
+project.tasks['sonarqube'].dependsOn jacocoTestReport
+
+def sonarExclusions = ["src/main/java/uk/gov/hmcts/reform/pip/data/management/config/AzureBlobConfiguration.java"]
+
+sonarqube {
+  properties {
+    property "sonar.projectName", "PIP Data Management"
+    property "sonar.projectKey", "pip-data-management"
+    property "sonar.exclusions", sonarExclusions.join(', ')
+  }
+}
+
+// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+dependencyCheck {
+  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+  // range of 0-10 fails the build, anything greater and it doesn't fail the build
+  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+  suppressionFile = 'config/owasp/suppressions.xml'
+
+  analyzers {
+    // Disable scanning of .NET related binaries
+    assemblyEnabled = false
+  }
+}
+
+ext {
+  reformLoggingVersion = "6.0.1"
+}
+
+dependencies {
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.22.3'
+  implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.8.0'
+  implementation group: 'com.vladmihalcea', name: 'hibernate-types-60', version: '2.21.1'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
+  implementation group: 'com.google.guava', name: 'guava', version: '32.1.2-jre'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: reformLoggingVersion
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: reformLoggingVersion
+  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
+  implementation group: 'com.azure', name: 'azure-data-tables', version: '12.3.13'
+  implementation 'com.networknt:json-schema-validator:1.0.83'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
+  implementation group: 'com.github.hmcts', name: 'pip-data-models', version: '2.1.4'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'com.azure.spring:spring-cloud-azure-starter-active-directory:5.3.0'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation 'com.opencsv:opencsv:5.8'
+  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+  // Include Flyway for database migrations
+  implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.21.1'
+
+  // Force upgrade snakeyaml version for CVE-2022-38752
+  implementation( group: 'org.yaml', name: 'snakeyaml').version {
+    strictly("2.0")
+  }
+
+  testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+  testImplementation "io.zonky.test:embedded-database-spring-test:2.3.0"
+  testImplementation(platform('org.junit:junit-bom:5.10.0'))
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
+    exclude group: 'junit', module: 'junit'
+    exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+  }
+  testImplementation group: 'org.springframework.security', name: 'spring-security-test'
+  testImplementation group: 'io.github.hakky54', name: 'logcaptor', version: '2.9.0'
+  testImplementation group: 'org.apiguardian', name: 'apiguardian-api', version: '1.1.2'
+
+  functionalTestImplementation sourceSets.main.runtimeClasspath
+  functionalTestImplementation sourceSets.test.runtimeClasspath
+
+  smokeTestImplementation sourceSets.main.runtimeClasspath
+  smokeTestImplementation sourceSets.test.runtimeClasspath
+}
+
+bootJar {
+  archiveFileName = "pip-data-management.jar"
+
+  manifest {
+    attributes('Implementation-Version': project.version.toString())
+  }
+}
+
+// Gradle 7.x issue, workaround from: https://github.com/gradle/gradle/issues/17236#issuecomment-894768083
+rootProject.tasks.named("processSmokeTestResources") {
+  duplicatesStrategy = 'include'
+}
+
+// Gradle 7.x issue, workaround from: https://github.com/gradle/gradle/issues/17236#issuecomment-894768083
+rootProject.tasks.named("processFunctionalTestResources") {
+  duplicatesStrategy = 'include'
+}
+
+wrapper {
+  distributionType = Wrapper.DistributionType.ALL
+}
+
+ext['log4j2.version'] = '2.17.2'

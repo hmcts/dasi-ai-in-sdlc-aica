@@ -1,0 +1,119 @@
+server:
+  port: 6969
+
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+
+#If you use a database then uncomment below lines and update db properties accordingly
+spring:
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        profile:
+          tenant-id: ${TENANT_ID}
+        credential:
+          client-id: ${CLIENT_ID}
+          client-secret: ${CLIENT_SECRET}
+        app-id-uri: ${APP_URI}
+        authorization-clients:
+          publicationServicesApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${PUBLICATION_SERVICES_AZ_API}/.default
+          subscriptionManagementApi:
+            authorization-grant-type: client_credentials
+            scopes:
+              - ${SUBSCRIPTION_MANAGEMENT_AZ_API}/.default
+  config:
+    import: "optional:configtree:/mnt/secrets/pip-ss-kv/"
+  jackson:
+    parser:
+      STRICT_DUPLICATE_DETECTION: true
+  application:
+    name: PIP Account Management
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    properties:
+      charSet: UTF-8
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 10000
+      poolName: ConnectionPool
+      maxLifetime: 7200000
+      connectionTimeout: 30000
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    database: POSTGRESQL
+    hibernate:
+      # Updated to 'none'. This is the default, and prevents auto updates in production
+      ddl-auto: ${DB_UPDATE:none}
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+  # This is needed as locally, all tables are in a single schema. Flyway is only enabled on the clusters by default
+  flyway:
+    enabled: ${ENABLE_FLYWAY:false}
+
+service-to-service:
+  publication-services: ${PUBLICATION_SERVICES_URL:https://pip-publication-services.staging.platform.hmcts.net}
+  subscription-management: ${SUBSCRIPTION_MANAGEMENT_URL:https://pip-subscription-management.staging.platform.hmcts.net}
+
+azure:
+  id:
+    client-id: ${CLIENT_ID_B2C:00000000-0000-0000-0000-000000000000}
+    client-secret: ${CLIENT_SECRET_B2C}
+    tenant-guid: ${TENANT_GUID_B2C:00000000-0000-0000-0000-000000000000}
+    extension-id: ${EXTENSION_ID:00000000-0000-0000-0000-000000000000}
+    token-provider: "https://graph.microsoft.com/.default"
+    b2c-url: ${IDENTITY_ISSUER}
+  user:
+    identity-issuer: ${IDENTITY_ISSUER:hmctspipnonprod.onmicrosoft.com}
+    signInType: emailAddress
+  blob:
+    connection-string: ${CONNECTION_STRING}
+    storage-account-name: ${STORAGE_ACCOUNT_NAME}
+    container-name: files
+  managed-identity:
+    client-id: ${MANAGED_IDENTITY_CLIENT_ID:}
+
+dbMigration:
+  runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:true}
+
+# Used to conditionally enable testing support API
+testingSupport:
+  enableApi: ${ENABLE_TESTING_SUPPORT_API:true}
+
+verification:
+  media-account-verification-email-days: 350
+  media-account-deletion-days: 365
+  aad-admin-account-sign-in-notification-days: 76
+  aad-admin-account-deletion-days: 90
+  idam-account-sign-in-notification-days: 118
+  idam-account-deletion-days: 132
+
+admin:
+  max-system-admin: ${MAX_SYSTEM_ADMIN_ACCOUNTS:4}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/

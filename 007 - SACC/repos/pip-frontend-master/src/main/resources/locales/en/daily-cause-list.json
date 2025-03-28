@@ -1,0 +1,19 @@
+{
+    "title": "Civil Daily Cause List",
+    "headerPart1": "Civil Daily Cause List for ",
+    "listDate": "List for",
+    "listUpdated": "Last updated DATE at ",
+    "importantInformationHeading": "Important information",
+    "hearingDurationHour": "hour",
+    "hearingDurationMinute": "min",
+    "hearingDurationHours": "hours",
+    "hearingDurationMinutes": "mins",
+    "time": "Time",
+    "caseId": "Case ID",
+    "caseName": "Case name",
+    "hearingType": "Hearing type",
+    "hearingPlatform": "Location",
+    "duration": "Duration",
+    "dataSource": "Data Source",
+    "backButton": "Back"
+}

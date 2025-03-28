@@ -1,0 +1,85 @@
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "./macros/common-components.njk" import goBack, submitButton %}
+
+{% extends "template.njk" %}
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+{% block beforeContent %}
+  {{ super() }}
+  {{ goBack(text = backButton) }}
+{% endblock %}
+{% block content %}
+  <div class="parent-box">
+    {% if noResultsError  or invalidInputError %}
+      <div class="govuk-grid-row">
+        <div class="no_padding govuk-grid-column-full">
+          {{ govukErrorSummary({
+            titleText: error.title,
+            errorList: [
+              {
+                text: error.notfound,
+                href: "#search-input"
+              }
+            ]
+          }) }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% set inputClasses = 'govuk-input govuk-input--error'
+      if noResultsError or invalidInputError else 'govuk-input' %}
+    {% set formGroupError = 'govuk-form-group--error'
+      if noResultsError or invalidInputError else 'govuk-form-group' %}
+
+    <form action="case-reference-number-search" method="post">
+      <div class="govuk-form-group">
+        <h1 class="govuk-heading-l">
+          <label class="govuk-label govuk-label--l" for="search-input">
+            {{ header }}
+          </label>
+        </h1>
+        <div id="search-input-hint" class="govuk-hint">
+          {{ govukInsetText({
+              text: hint
+          }) }}
+        </div>
+        <div class="{{ formGroupError }}">
+          {% if noResultsError or invalidInputError %}
+            <span class="govuk-error-message">{{ error.header }}</span>
+          {% endif %}
+          <div class="govuk-!-width-one-third">
+            <input class="{{ inputClasses }}" id="search-input" name="search-input" type="text"
+                   aria-describedby="search-input-hint">
+          </div>
+        </div>
+      </div>
+
+    {{ submitButton(continueButton) }}
+    </div>
+    {% if noResultsError or invalidInputError %}
+      <div class="govuk-grid-row">
+        <div class="no_padding govuk-grid-column-full">
+          <h2 class="govuk-heading-s">{{ error.line1 }}</h2>
+          <p class="govuk-body">{{ error.line2 }}</p>
+          <ul>
+            <li class="govuk-body">{{ error.liText1 }}</li>
+            <li class="govuk-body"><a href="/subscription-add">{{ error.liText2 }}</a></li>
+          </ul>
+        </div>
+      </div>
+  {% endif %}
+  </form>
+  {{ super() }}
+  </div>
+{% endblock %}
+{% block bodyEnd %}
+  <script>
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+  </script>
+  {{ super() }}
+{% endblock %}

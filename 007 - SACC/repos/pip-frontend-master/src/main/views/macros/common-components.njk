@@ -1,0 +1,97 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/accordion/macro.njk" import govukAccordion %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+
+{% macro submitButton(label = 'Continue', id = 'button', ariaLabel = 'Continue Button', disable = false) %}
+    {{ govukButton({
+        text: label,
+        disabled: disable,
+        attributes: {
+          id: id
+        }
+    })}}
+{% endmacro %}
+
+{% macro goBack(path = '#', text = 'Back', id = '', ariaLabel = 'Back Button') %}
+  {{ govukBackLink({
+    text: text,
+    href: path,
+    attributes: {
+      onClick: "history.back(); event.preventDefault();"
+    }
+  }) }}
+{% endmacro %}
+
+{% macro searchInput(text = 'Search Cases') %}
+  <div class="govuk-form-group govuk-!-margin-bottom-0">
+    <h1 class="govuk-label-wrapper"><label class="govuk-label govuk-label--s" for="search-input">
+        {{ text }}
+      </label>
+    </h1>
+    <input class="govuk-input govuk-input--width-20" id="search-input" name="search-input" type="text">
+  </div>
+{% endmacro %}
+
+{% macro successPanel(title='', text='') %}
+    {{ govukPanel({
+        titleText: title,
+        text: text
+    }) }}
+{% endmacro %}
+
+{% macro backToTopButton(text = 'Back to top') %}
+  <a id="back-to-top-button" class="floating-back-to-top--fixed govuk-link govuk-link--no-underline govuk-!-font-size-19 with-background" href="#">
+    <svg focusable="false" class="app-back-to-top__icon" xmlns="http://www.w3.org/2000/svg" width="13" height="17"
+         viewBox="0 0 13 17">
+      <path fill="currentColor" d="M6.5 0 L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
+    </svg>{{ text }}
+  </a>
+  <script>
+    //Get the button:
+    mybutton = document.getElementById("back-to-top-button");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() { scrollFunction() };
+    var offSet = 350;
+    mybutton.style.display = "none";
+    function scrollFunction() {
+      if (document.body.scrollTop > offSet || document.documentElement.scrollTop > offSet) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+  </script>
+{% endmacro %}
+
+{% macro mojAll() %}
+  <script type="text/javascript" src="/assets/js/jquery.js"></script>
+  <script type="text/javascript" src="/assets/js/mojAll.js"></script>
+  <script>
+    window.MOJFrontend.initAll()
+  </script>
+{% endmacro %}
+
+{% macro betaLink(betaText) %}
+    {{ govukPhaseBanner({
+        tag: {
+            text: "beta"
+        },
+        html: betaText
+    }) }}
+    <script>
+        var link = document.getElementById("betalink")
+        link.href = link.href + window.location.pathname.substring(1)
+    </script>
+{% endmacro %}
+

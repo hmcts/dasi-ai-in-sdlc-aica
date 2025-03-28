@@ -1,0 +1,18 @@
+nodejs:
+    devmemoryRequests: 512Mi
+    devcpuRequests: 300m
+    devmemoryLimits: 1024Mi
+    # Don't modify below here
+    image: ${IMAGE_NAME}
+    ingressHost: ${SERVICE_FQDN}
+    startupPeriod: 30
+    startupFailureThreshold: 10
+    environment:
+        OIDC: true
+        AUTH_RETURN_URL: https://${SERVICE_FQDN}/login/return
+        MEDIA_VERIFICATION_RETURN_URL: https://${SERVICE_FQDN}/media-verification/return
+        ADMIN_AUTH_RETURN_URL: https://${SERVICE_FQDN}/login/admin/return
+        FRONTEND_URL: https://${SERVICE_FQDN}
+        EXCLUDE_E2E: true
+        ENABLE_CFT: true
+        CFT_IDAM_URL: https://idam-web-public.aat.platform.hmcts.net

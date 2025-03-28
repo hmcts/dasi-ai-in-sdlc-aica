@@ -1,0 +1,18 @@
+{
+    "title": "SSCS Daily List",
+    "hearingsFor": " hearings for ",
+    "listUpdated": "Last updated DATE at ",
+    "listDate": "List for",
+    "warning": "Please note: There may be 2 hearing lists available for this date. Please make sure you look at both lists to see all hearings happening on this date for this location.",
+    "importantInformationHeading": "Important information",
+    "dataSource": "Data Source",
+    "backButton": "Back",
+    "hearingTime": "Hearing Time",
+    "appRefNumber": "Appeal reference number",
+    "tribunalType": "Tribunal type",
+    "appellant": "Appellant",
+    "respondent": "FTA/Respondent",
+    "panel": "Panel",
+    "legalAdvisor": "Legal Advisor",
+    "missingCourt": "Missing Court"
+}

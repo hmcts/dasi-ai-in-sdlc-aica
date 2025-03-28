@@ -1,0 +1,202 @@
+{
+    "SJP_PUBLIC_LIST": {
+        "friendlyName": "Single Justice Procedure Public List",
+        "welshFriendlyName": "Rhestr Gyhoeddus Y Weithdrefn Un Ynad",
+        "shortenedFriendlyName": "SJP Public List",
+        "url": "sjp-public-list",
+        "jurisdictions": ["Magistrates"],
+        "welshJurisdictions": ["Llys Ynadon"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "SJP_PRESS_LIST": {
+        "friendlyName": "Single Justice Procedure Press List (Full List)",
+        "welshFriendlyName": "Rhestr y Wasg Y Weithdrefn Un Ynad (Rhestr Lawn)",
+        "shortenedFriendlyName": "SJP Press List (Full list)",
+        "url": "sjp-press-list",
+        "jurisdictions": ["Magistrates"],
+        "welshJurisdictions": ["Llys Ynadon"],
+        "restrictedProvenances": ["PI_AAD"],
+        "defaultSensitivity": "CLASSIFIED"
+    },
+    "SJP_DELTA_PRESS_LIST": {
+        "friendlyName": "Single Justice Procedure Press List (New Cases)",
+        "welshFriendlyName": "Rhestr y Wasg Y Weithdrefn Un Ynad (Achosion Newydd)",
+        "shortenedFriendlyName": "SJP Press List (New cases)",
+        "url": "sjp-press-list-new-cases",
+        "jurisdictions": ["Magistrates"],
+        "welshJurisdictions": ["Llys Ynadon"],
+        "restrictedProvenances": ["PI_AAD"],
+        "defaultSensitivity": "CLASSIFIED"
+    },
+    "SJP_PRESS_REGISTER": {
+        "friendlyName": "Single Justice Procedure Press Register",
+        "welshFriendlyName": "Cofrestr y Wasg Y Weithdrefn Un Ynad",
+        "shortenedFriendlyName": "SJP Press Register",
+        "url": "",
+        "jurisdictions": ["Magistrates"],
+        "welshJurisdictions": ["Llys Ynadon"],
+        "restrictedProvenances": ["PI_AAD"],
+        "defaultSensitivity": "CLASSIFIED"
+    },
+    "CROWN_DAILY_LIST": {
+        "friendlyName": "Crown Daily List",
+        "welshFriendlyName": "Rhestr Ddyddiol Llys y Goron",
+        "shortenedFriendlyName": "Crown Daily List",
+        "url": "crown-daily-list",
+        "jurisdictions": ["Crown"],
+        "welshJurisdictions": ["Llys y Goron"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "CROWN_WARNED_LIST": {
+        "friendlyName": "Crown Warned List",
+        "welshFriendlyName": "Rhestr Rybudd Llys y Goron",
+        "shortenedFriendlyName": "Crown Warned List",
+        "url": "crown-warned-list",
+        "jurisdictions": ["Crown"],
+        "welshJurisdictions": ["Llys y Goron"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": "PRIVATE"
+    },
+    "CROWN_FIRM_LIST": {
+        "friendlyName": "Crown Firm List",
+        "welshFriendlyName": "Rhestr Cwmni Llys y Goron",
+        "shortenedFriendlyName": "Crown Firm List",
+        "url": "crown-firm-list",
+        "jurisdictions": ["Crown"],
+        "welshJurisdictions": ["Llys y Goron"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": "PRIVATE"
+    },
+    "MAGISTRATES_PUBLIC_LIST": {
+        "friendlyName": "Magistrates Public List",
+        "welshFriendlyName": "Rhestr Gyhoeddus y Llys Ynadon",
+        "shortenedFriendlyName": "Magistrates Public List",
+        "url": "magistrates-public-list",
+        "jurisdictions": ["Crown"],
+        "welshJurisdictions": ["Llys y Goron"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "MAGISTRATES_STANDARD_LIST": {
+        "friendlyName": "Magistrates Standard List",
+        "welshFriendlyName": "Rhestr Safonol y Llys Ynadon",
+        "shortenedFriendlyName": "Magistrates Standard List",
+        "url": "magistrates-standard-list",
+        "jurisdictions": ["Crown"],
+        "welshJurisdictions": ["Llys y Goron"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": "PRIVATE"
+    },
+    "CIVIL_DAILY_CAUSE_LIST": {
+        "friendlyName": "Civil Daily Cause List",
+        "welshFriendlyName": "Rhestr Achosion Dyddiol y Llys Sifil",
+        "shortenedFriendlyName": "Civil Daily Cause List",
+        "url": "daily-cause-list",
+        "jurisdictions": ["Civil"],
+        "welshJurisdictions": ["Llys Sifil"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "FAMILY_DAILY_CAUSE_LIST": {
+        "friendlyName": "Family Daily Cause List",
+        "welshFriendlyName": "Rhestr Achosion Dyddiol y Llys Teulu",
+        "shortenedFriendlyName": "Family Daily Cause List",
+        "url": "family-daily-cause-list",
+        "jurisdictions": ["Family"],
+        "welshJurisdictions": ["Llys Teulu"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "CIVIL_AND_FAMILY_DAILY_CAUSE_LIST": {
+        "friendlyName": "Civil and Family Daily Cause List",
+        "welshFriendlyName": "Rhestr Achosion Dyddiol y Llys Sifil a Theulu",
+        "shortenedFriendlyName": "Civil And Family Daily Cause List",
+        "url": "civil-and-family-daily-cause-list",
+        "jurisdictions": ["Civil", "Family"],
+        "welshJurisdictions": ["Llys Sifil", "Llys Teulu"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "SSCS_DAILY_LIST": {
+        "friendlyName": "Social Security and Child Support Tribunal Daily List",
+        "welshFriendlyName": "Rhestr Ddyddiol y Tribiwnlys Nawdd Cymdeithasol a Chynnal Plant",
+        "shortenedFriendlyName": "SSCS Daily List",
+        "url": "sscs-daily-list",
+        "jurisdictions": ["Social Security and Child Support"],
+        "welshJurisdictions": ["Tribiwnlys Nawdd Cymdeithasol a Chynnal Plant"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "SSCS_DAILY_LIST_ADDITIONAL_HEARINGS": {
+        "friendlyName": "Social Security and Child Support Tribunal Daily List - Additional Hearings",
+        "welshFriendlyName": "Rhestr Ddyddiol y Tribiwnlys Nawdd Cymdeithasol a Chynnal Plant - Gwrandawiadau Ychwanegol",
+        "shortenedFriendlyName": "SSCS Daily List - Additional Hearings",
+        "url": "sscs-daily-list-additional-hearings",
+        "jurisdictions": ["Social Security and Child Support"],
+        "welshJurisdictions": ["Tribiwnlys Nawdd Cymdeithasol a Chynnal Plant"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "COP_DAILY_CAUSE_LIST": {
+        "friendlyName": "Court of Protection Daily Cause List",
+        "welshFriendlyName": "Rhestr Achosion Dyddiol y Llys Gwarchod",
+        "shortenedFriendlyName": "COP Daily Cause List",
+        "url": "cop-daily-cause-list",
+        "jurisdictions": ["Civil"],
+        "welshJurisdictions": ["Llys Sifil"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "ET_DAILY_LIST": {
+        "friendlyName": "Employment Tribunals Daily List",
+        "welshFriendlyName": "Rhestr Ddyddiol y Tribiwnlysoedd Cyflogaeth",
+        "shortenedFriendlyName": "ET Daily List",
+        "url": "et-daily-list",
+        "jurisdictions": ["Tribunal"],
+        "welshJurisdictions": ["Tribiwnlys"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "ET_FORTNIGHTLY_PRESS_LIST": {
+        "friendlyName": "Employment Tribunals Fortnightly Press List",
+        "welshFriendlyName": "Rhestr y Wasg Pob Pythefnos y Tribiwnlysoedd Cyflogaeth",
+        "shortenedFriendlyName": "ET Fortnightly List",
+        "url": "et-fortnightly-list",
+        "jurisdictions": ["Tribunal"],
+        "welshJurisdictions": ["Tribiwnlys"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "IAC_DAILY_LIST": {
+        "friendlyName": "Immigration and Asylum Chamber Daily List",
+        "welshFriendlyName": "Rhestr Ddyddiol y Siambr Mewnfudo a Lloches",
+        "shortenedFriendlyName": "IAC Daily List",
+        "url": "iac-daily-list",
+        "jurisdictions": ["Tribunal"],
+        "welshJurisdictions": ["Tribiwnlys"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "PRIMARY_HEALTH_LIST": {
+        "friendlyName": "Primary Health Tribunal Hearing List",
+        "welshFriendlyName": "Rhestr Gwrandawiadau’r Tribiwnlys Iechyd Sylfaenol",
+        "shortenedFriendlyName": "Primary Health Tribunal Hearing List",
+        "url": "primary-health-list",
+        "jurisdictions": ["Tribunal"],
+        "welshJurisdictions": ["Tribiwnlys"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    },
+    "CARE_STANDARDS_LIST": {
+        "friendlyName": "Care Standards Tribunal Hearing List",
+        "welshFriendlyName": "Rhestr Gwrandawiadau’r Tribiwnlys Safonau Gofal",
+        "shortenedFriendlyName": "Care Standards Tribunal Hearing List",
+        "url": "care-standards-list",
+        "jurisdictions": ["Tribunal"],
+        "welshJurisdictions": ["Tribiwnlys"],
+        "restrictedProvenances": [],
+        "defaultSensitivity": ""
+    }
+}

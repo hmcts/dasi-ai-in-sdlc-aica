@@ -1,0 +1,23 @@
+{
+    "title": "COP Daily Cause List",
+    "listUpdated": "Last updated DATE at ",
+    "importantInformationHeading": "Important information",
+    "dataSource": "Data Source",
+    "backButton": "Back",
+    "hearingDurationHour": "hour",
+    "hearingDurationMinute": "min",
+    "hearingDurationHours": "hours",
+    "hearingDurationMinutes": "mins",
+    "regionalLeadJudge": "Regional Lead Judge",
+    "sittingAt": "Sitting at",
+    "listFor": "List for",
+    "beforeHon": "Before",
+    "startTime": "Start Time",
+    "caseRef": "Case Ref",
+    "caseDetails": "Case Details",
+    "hearingType": "Hearing Type",
+    "timeEstimate": "Time Estimate",
+    "hearingChannel": "Hearing Channel",
+    "inCop": "In the Court of Protection",
+    "missingCourt": "Missing Court"
+}

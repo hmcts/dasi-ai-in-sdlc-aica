@@ -1,0 +1,12 @@
+#!groovy
+//noinspection GroovyUnusedAssignment
+@Library("Infrastructure") _
+
+def product = "pip"
+def component = "bootstrap"
+
+def branchesToSync = ['demo', 'perftest', 'ithc']
+
+withInfraPipeline(product, component) {
+ syncBranchesWithMaster(branchesToSync)
+}

@@ -1,0 +1,23 @@
+{
+    "title": "COP Daily Cause List",
+    "listUpdated": "Diweddarwyd ddiwethaf DATE yn ",
+    "importantInformationHeading": "Gwybodaeth bwysig",
+    "dataSource": "Ffynhonnell y Data",
+    "backButton": "Yn ôl",
+    "hearingDurationHour": "awr",
+    "hearingDurationMinute": "munud",
+    "hearingDurationHours": "awr",
+    "hearingDurationMinutes": "munud",
+    "regionalLeadJudge": "Barnwr Arweiniol Rhanbarthol",
+    "sittingAt": "Yn eistedd yn",
+    "listFor": "Rhestr ar gyfer",
+    "beforeHon": "Before",
+    "startTime": "Amser dechrau",
+    "caseRef": "Cyfeirnod achos",
+    "caseDetails": "Manylion yr achos",
+    "hearingType": "Math o wrandawiad",
+    "timeEstimate": "Amcangyfrif o'r amser",
+    "hearingChannel": "Sianel y Gwrandawiad",
+    "inCop": "Yn y Llys Gwarchod",
+    "missingCourt": "Llys ar Goll"
+}

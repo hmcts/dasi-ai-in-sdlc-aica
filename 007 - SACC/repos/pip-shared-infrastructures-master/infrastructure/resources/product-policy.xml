@@ -1,0 +1,19 @@
+    <policies>
+        <inbound>
+            <base />
+            <rate-limit-by-key  calls="50"
+              renewal-period="60"
+              increment-condition="@(context.Response.StatusCode == 200)"
+              counter-key="@(context.Request.IpAddress)"
+              remaining-calls-variable-name="remainingCallsPerIP"/>
+        </inbound>
+        <backend>
+            <base />
+        </backend>
+        <outbound>
+            <base />
+        </outbound>
+        <on-error>
+            <base />
+        </on-error>
+    </policies>

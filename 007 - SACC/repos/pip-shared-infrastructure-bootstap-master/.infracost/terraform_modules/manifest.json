@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"kv","Source":"git@github.com:hmcts/cnp-module-key-vault?ref=master","Dir":".infracost\\terraform_modules\\kv"},{"Key":"kv.log_analytics_workspace","Source":"git::https://github.com/hmcts/terraform-module-log-analytics-workspace-id.git?ref=master","Dir":".infracost\\terraform_modules\\kv.log_analytics_workspace"}]}

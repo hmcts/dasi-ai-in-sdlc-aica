@@ -1,0 +1,50 @@
+{% from "./macros/common-components.njk" import goBack, backToTopButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% extends "template.njk" %}
+{% block pageTitle %}
+  {{ title }} {{ locationName }}?
+{% endblock %}
+{% block beforeContent %}
+  {{ super() }}
+  {{ goBack(text = backButton) }}
+{% endblock %}
+{% block content %}
+<div class="parent-box">
+  <h1 class="govuk-heading-l">{{ title }} {{ locationName }}?</h1>
+  {% if publications.length === 0 %}
+    {% if isSjp %}
+        <p class="govuk-body govuk-!-font-size-16">{{ sjpMessage }}</p>
+    {% elseif court.email | length and court.contactNo | length %}
+        <p class="govuk-body govuk-!-font-size-16">{{ noListsWithCourtInfo | replace("COURTNAME", locationName) | replace("CONTACTNO", court.contactNo) | replace("EMAIL", court.email) }}</p>
+    {% else %}
+        <p class="govuk-body govuk-!-font-size-16">{{ noLists }}</p>
+    {% endif %}
+  {% else %}
+    <p class="govuk-body">{{ p1 }}</p>
+    <div class="parent-box">
+    {% set pubs = [] %}
+    <ul class="no-bullets-list">
+      {% for item in publications | sort(attribute="listType") | sort(reverse= true, attribute="contentDate") %}
+        <li class="govuk-body govuk-!-font-size-16">
+          {% if item.isFlatFile %}
+            <a class=das-search-results__link target=”_blank” href="file-publication?artefactId={{ item.artefactId }}">
+              {{ item.listType | listType }} {{ item.contentDate | date("DD MMMM YYYY") }} - {{ item.language | language }}</a>
+            {{ newWindow }}
+          {% else %}
+            <a class=das-search-results__link
+               href="{{ item.listType | listUrl }}?artefactId={{ item.artefactId }}">{{ item.listType | listType }} {{ item.contentDate | date("DD MMMM YYYY") }} - {{ item.language | language }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <br/>
+  <br/>
+  {{ super() }}
+  </div>
+</div>
+{% endblock %}
+{% block bodyEnd %}
+  {{ super() }}
+{% endblock %}
