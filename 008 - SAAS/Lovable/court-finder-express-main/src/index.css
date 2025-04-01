@@ -1,0 +1,121 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 203 70% 46.1%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 203 70% 46.1%;
+
+    --radius: 0px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-govuk-black font-sans text-base antialiased;
+    font-family: 'Noto Sans', sans-serif;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-govuk-black;
+  }
+
+  /* GOV.UK specific styling */
+  .govuk-width-container {
+    @apply max-w-[960px] mx-auto px-4 sm:px-6;
+  }
+
+  .govuk-heading-xl {
+    @apply text-4xl leading-tight mb-6 font-bold;
+  }
+
+  .govuk-heading-l {
+    @apply text-3xl leading-tight mb-4 font-bold;
+  }
+
+  .govuk-heading-m {
+    @apply text-2xl leading-tight mb-3 font-bold;
+  }
+
+  .govuk-body {
+    @apply mb-5 text-base;
+  }
+
+  .govuk-link {
+    @apply text-govuk-blue underline hover:text-black focus:outline-none focus:bg-govuk-yellow focus:text-govuk-black transition-colors;
+  }
+
+  .govuk-button {
+    @apply inline-block px-8 py-2 text-base bg-govuk-green text-white font-bold border-2 border-transparent 
+    hover:bg-[#005a30] focus:outline focus:outline-[3px] focus:outline-govuk-yellow focus:bg-[#005a30] shadow-sm transition-colors;
+  }
+
+  .govuk-button--secondary {
+    @apply bg-govuk-light-grey text-govuk-black hover:bg-govuk-mid-grey;
+  }
+
+  .govuk-button--warning {
+    @apply bg-govuk-red hover:bg-[#aa2a16];
+  }
+
+  .govuk-input {
+    @apply w-full p-2 border-2 border-govuk-black focus:outline focus:outline-[3px] focus:outline-govuk-yellow;
+  }
+
+  .govuk-label {
+    @apply block mb-1 text-base font-bold;
+  }
+
+  .govuk-error-summary {
+    @apply p-4 border-4 border-l-govuk-red mb-6;
+  }
+
+  /* Animation utilities */
+  .page-transition-enter {
+    @apply opacity-0;
+  }
+  
+  .page-transition-enter-active {
+    @apply opacity-100 transition-opacity duration-300;
+  }
+  
+  .page-transition-exit {
+    @apply opacity-100;
+  }
+  
+  .page-transition-exit-active {
+    @apply opacity-0 transition-opacity duration-300;
+  }
+}

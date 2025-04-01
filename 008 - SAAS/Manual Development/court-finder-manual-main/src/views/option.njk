@@ -1,0 +1,48 @@
+{% extends "index.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" action="/know-the-name" novalidate>
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {{ govukRadios({
+          idPrefix: "knowTheName",
+          name: "knowTheName",
+          fieldset: {
+            legend: {
+              text: heading,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          hint: {
+            text: hintText
+          },
+          errorMessage: errors.knowTheName and {
+            text: errors.knowTheName.msg
+          },
+          items: [
+            {
+              value: "yes",
+              text: haveTheName,
+              checked: knowTheName === "yes"
+            },
+            {
+              value: "no",
+              text: dontHaveTheName,
+              checked: knowTheName === "yes"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: continueButton,
+          type: "submit"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

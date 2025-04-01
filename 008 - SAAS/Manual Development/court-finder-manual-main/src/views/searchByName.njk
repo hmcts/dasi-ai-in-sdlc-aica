@@ -1,0 +1,32 @@
+{% extends "index.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" action="/know-the-name" novalidate>
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <h1 class="govuk-heading-l">{{findACourtInput}}
+                    <span class="govuk-caption-m">{{findACourtHint}}</span>
+        </h1>
+
+        {{ govukInput({
+        label: {
+            text: findACourtPrompt,
+            classes: "govuk-label--m",
+            isPageHeading: false
+        },
+        classes: "govuk-input--width-25",
+        id: "court-name",
+        name: "courtName",
+        hint:{text:findACourtPromptHint}
+        }) }}
+        {{ govukButton({
+          text: continueButton,
+          type: "submit"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
