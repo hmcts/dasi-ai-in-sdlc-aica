@@ -4532,9 +4532,7 @@ co@^4.6.0:
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
 codeceptjs@^3.5.3:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.7.2.tgz#e931b7803b380fb184dc45dfd3496a9666f46e3b"
-  integrity sha512-9WKK0+drfW04kSNHGEkBUbA7i5a3zPYTnY2z0bBhBIQYVgSmVGic2IzLWPuWKO2Q1EcjuJHbn5qlnTg6NxTXaw==
+  version "3.7.5"
   dependencies:
     "@codeceptjs/configure" "1.0.2"
     "@codeceptjs/helper" "2.0.4"
